@@ -56,9 +56,7 @@ ln -s /opt/windows-tools /adhd/1-annoyance/windows-tools
 ln -s /opt/wordpot /adhd/1-annoyance/wordpot
 
 
-chown www-data:www-data -R /var/www
 apt-get -y install python-dev
-apt-get -y install apache2
 apt-get -y install php5
 apt-get -y install php5-mysql
 apt-get -y install php5-pgsql
@@ -211,8 +209,6 @@ make install
 git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
 git clone https://github.com/rapid7/metasploit-framework /opt/metasploit
 git clone https://github.com/adhdproject/webkit /var/www
-chown www-data:www-data /var/www
-
-
-
+apt-get -y install apache2 
+chown www-data:www-data -R /var/www
 
