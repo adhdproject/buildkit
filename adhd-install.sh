@@ -3,6 +3,8 @@ if [ `whoami` != 'root' ]; then
 echo "need to run as root, or with sudo"; exit
 fi
 
+apt-get update
+
 #install git
 apt-get -y install git
 
@@ -196,7 +198,7 @@ bundle install
 chown www-data:www-data /var/www -R
 
 #post kippo
-apt-get install python-twisted
+apt-get -y install python-twisted
 
 #Install portspoof
 cd /opt/portspoof
