@@ -20,6 +20,7 @@ cd /
 ln -s /opt/artillery /adhd/1-annoyance/artillery
 ln -s /opt/beartrap /adhd/1-annoyance/beartrap
 ln -s /opt/beef /adhd/4-attack/beef
+ln -s /opt/cowrie /adhd/1-annoyance/cowrie
 ln -s /opt/creepy /adhd/2-attribution/creepy
 ln -s /opt/cryptolocked /adhd/1-annoyance/cryptolocked
 ln -s /opt/decloak /adhd/2-attribution/decloak
@@ -49,6 +50,7 @@ ln -s /opt/sent.py /adhd/3-absolution/sent.py
 ln -s /opt/sidejack /adhd/4-attack/sidejack
 ln -s /opt/simple-pivot-detect /adhd/3-absolution/simple-pivot-detect
 ln -s /opt/sqlitebugserver /adhd/2-attribution/sqlitebugserver
+ln -s /opt/spidertrap /adhd/1-annoyance/spidertrap
 ln -s /opt/sweeper /adhd/3-absolution/sweeper
 ln -s /opt/tcprooter /adhd/1-annoyance/tcprooter
 ln -s /opt/webbugserver /adhd/2-attribution/webbugserver
@@ -66,6 +68,12 @@ apt-get -y install php5-sqlite
 apt-get -y install odbc
 
 echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
+
+#dependencies for oschaemeleon
+apt-get -y install python-nfqueue python-gevent
+
+#dependencies for whosthere
+apt-get -y install golang
 
 #dependencies for creepy
 apt-get -y install python-qt4 python-pip
