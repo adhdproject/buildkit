@@ -309,35 +309,62 @@ apt-get -y install odbc
 echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
 
 #dependencies for oschaemeleon
-apt-get -y install python-nfqueue python-gevent
+if [[ "$oschaemeleon" = "y" || "$oschaemeleon" = "Y" ]]
+then
+    apt-get -y install python-nfqueue python-gevent
+fi
 
 #dependencies for creepy
-apt-get -y install python-qt4 python-pip
-pip install pytz python-qt flickrapi python-instagram yapsy tweepy google-api-python-client python-dateutil configobj dominate
+if [[ "$creepy" = "y" || "$creepy" = "Y" ]]
+then
+    apt-get -y install python-qt4 python-pip
+    pip install pytz python-qt flickrapi python-instagram yapsy tweepy google-api-python-client python-dateutil configobj dominate
+fi
 
 #dependencies for lockdown
-pip install splinter
+if [[ "$lockdown" = "y" || "$lockdown" = "Y" ]]
+then
+    pip install splinter
+fi
 
 #dependencies for sent.py
-pip install nltk
+if [[ "$sentpy" = "y" || "$sentpy" = "Y" ]]
+then
+    pip install nltk
+fi
 
 #dependencies for whosthere
-apt-get -y install golang-go
-apt-get -y install golang
+if [[ "$whosthere" = "y" || "$whosthere" = "Y" ]]
+then
+    apt-get -y install golang-go
+    apt-get -y install golang
+fi
 
 #dependencies for wordpot
-pip install flask
+if [[ "$wordpot" = "y" || "$wordpot" = "Y" ]]
+then
+    pip install flask
+fi
 
 #beartrap
-apt-get -y install ruby
-gem install getopt
+if [[ "$beartrap" = "y" || "$beartrap" = "Y" ]]
+then
+    apt-get -y install ruby
+    gem install getopt
+fi
 
 #beef
-gem install bundler
-apt-get -y install ruby-dev libsqlite3-dev libsqlite-dev
+if [[ "$beef" = "y" || "$beef" = "Y" ]]
+then
+    gem install bundler
+    apt-get -y install ruby-dev libsqlite3-dev libsqlite-dev
+fi
 
 #decloak
-apt-get -y install openjdk-7-jdk
+if [[ "$decloak" = "y" || "$beef" = "Y" ]]
+then
+    apt-get -y install openjdk-7-jdk
+fi
 
 #database mysql
 debconf-set-selections <<< 'mysql-server mysql-server/root_password password adhd'
@@ -436,20 +463,29 @@ apt-get update
 apt-get -y --force-yes install adhd-*
 
 #post install beef
-cd /opt/beef
-bundle install
+if [[ "$beef" = "y" || "$beef" = "Y" ]]
+then
+    cd /opt/beef
+    bundle install
+fi
 
 #post install www
 chown www-data:www-data /var/www -R
 
 #post kippo
-apt-get -y install python-twisted
+if [[ "$kippo" = "y" || "$kippo" = "Y" ]]
+then
+    apt-get -y install python-twisted
+fi
 
 #Install portspoof
-cd /opt/portspoof
-./configure
-make
-make install
+if [[ "$portspoof" = "y" || "$portspoof" = "Y" ]]
+then
+    cd /opt/portspoof
+    ./configure
+    make
+    make install
+fi
 
 #post install
 #chown adhd:adhd /opt -R
