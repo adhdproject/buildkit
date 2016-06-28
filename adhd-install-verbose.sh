@@ -41,7 +41,7 @@ done
 while true; do
     read -p "Do you want to install Cowrie [y/n]: " cowrie
     case $cowrie in
-        [Yy]* ) ln -s /opt/cowrie /adhd/1-annoyance/cowrie
+        [Yy]* ) ln -s /opt/cowrie /adhd/1-annoyance/cowrie; break;;
         * ) break;;
     esac
 done
