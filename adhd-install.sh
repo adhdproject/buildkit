@@ -120,7 +120,10 @@ apt-get -y install postgresql postgresql-contrib
 
 sudo -u postgres psql -c "CREATE USER decloakuser WITH PASSWORD 'adhd';"
 
-echo "--
+sudo -u postgres psql << EOF
+CREATE DATABASE decloak;
+\\connect decloak
+--
 -- PostgreSQL database dump
 --
 
@@ -187,10 +190,8 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+EOF
 
-" > /tmp/decloak.dump
-
-sudo -u postgres psql < /tmp/decloak.dump
 
 if ! grep -q 'neoadhd' /etc/apt/sources.list; then
 	echo "deb  https://github.com/adhdproject/neoadhd/raw/master ./" >> /etc/apt/sources.list
