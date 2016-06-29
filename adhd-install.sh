@@ -8,6 +8,8 @@ apt-get update
 #install git
 apt-get -y install git
 
+#general dependencies
+apt-get -y install sqlite3 sqlite
 
 cd /
 mkdir adhd
