@@ -77,6 +77,9 @@ apt-get -y install python-nfqueue python-gevent
 #dependencies for whosthere
 apt-get -y install golang
 
+#dependencies for TALOS
+pip install netaddr
+
 #dependencies for creepy
 apt-get -y install python-qt4 python-pip
 pip install pytz python-qt flickrapi python-instagram yapsy tweepy google-api-python-client python-dateutil configobj dominate
