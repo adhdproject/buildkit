@@ -67,7 +67,7 @@ apt-get -y install php5
 apt-get -y install php5-mysql
 apt-get -y install php5-pgsql
 apt-get -y install php5-sqlite
-apt-get -y install odbc
+apt-get -y install php5-odbc
 
 echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
 
