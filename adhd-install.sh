@@ -76,7 +76,6 @@ apt-get -y install python-nfqueue python-gevent
 
 #dependencies for whosthere
 apt-get -y install golang
-apt-get -y install golang-go
 
 #dependencies for creepy
 apt-get -y install python-qt4 python-pip
@@ -87,6 +86,9 @@ pip install splinter
 
 #dependencies for sent.py
 pip install nltk
+
+#dependencies for whosthere
+apt-get -y install golang-go
 
 #dependencies for wordpot
 pip install flask
@@ -194,7 +196,7 @@ EOF
 
 
 if ! grep -q 'neoadhd' /etc/apt/sources.list; then
-	echo "deb  https://github.com/adhdproject/neoadhd/raw/master ./" >> /etc/apt/sources.list
+	echo "deb  https://cdn.rawgit.com/adhdproject/neoadhd/master ./" >> /etc/apt/sources.list
 fi
 apt-get update
 apt-get -y --force-yes install adhd-*
