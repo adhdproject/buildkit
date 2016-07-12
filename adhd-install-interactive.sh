@@ -16,6 +16,7 @@ declare -a TOOLS=( "false" "false" "false" "false" "false" "false" "false" "fals
 # the name of the tools. each tool has a constant value (see below) starting at
 # '1' to match the menu screen. the first one here is "false" because arrays 
 # start indexing at 0. it's a drag.
+## I would like to use this for the actual individual install
 declare -a TOOL_NAMES=( "false" "artillery" "beartrap" "beef" "cowrie" "creepy"
 "cryptolocked" "decloak" "defense-by-numbers" "denyhosts" "docz.py" "gcat-poc"
 "gcat" "ghostwriting" "honeybadger" "honeyports" "human.py" "invisiport"
@@ -91,7 +92,6 @@ select_tools ()
     cols=$(tput cols)
     lines=$(tput lines)
     #echo "Cols=${cols} lines=${lines}"
-    ##echo "d=$d"
     let center=${cols}/2
     let head1_center=${center}-5
     let head2_center=${center}-7
@@ -118,7 +118,6 @@ select_tools ()
 
     # write the options
     # check if the tool is selected so it can be highlighted green
-
     # first column
 
     tput cup 7 ${col1_ind}
@@ -523,9 +522,7 @@ select_tools ()
             TOOLS[${tool_num}]="true"; select_tools;;
         # not adding tools.
         # quiting, installing selected tools, or default install
-        #99|10[01]|q ) "$select_flag"="false"; break;;
         99|10[01]|q ) return $tool_num;;
-        #* ) continue;;
         * ) select_tools;;
     esac
 }
@@ -759,6 +756,8 @@ EOF
 
 selected_install ()
 {
+    ##put in some check to see if there actually are tools that are selected
+
     apt-get update
 
     #install git
@@ -1098,11 +1097,184 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 EOF
 
     # This is where the installing magic happens
+    # package has filename X
+    # adhd-X
+    ## I would really like to clean this, be able to do a loop with the 
+    ## array of tools and their tool names, but for now, I'm going to
+    ## have to hardcode until I have a definite list of package names.
     if ! grep -q 'neoadhd' /etc/apt/sources.list; then
         echo "deb  https://cdn.rawgit.com/adhdproject/neoadhd/master ./" >> /etc/apt/sources.list
     fi
     apt-get update
-    apt-get -y --force-yes install adhd-*
+    #apt-get -y --force-yes install adhd-*
+    if [ "${TOOLS[OPENBAC]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-OpenBAC
+    fi
+    if [ "${TOOLS[PHPHTTPTARPIT]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-PHP-HTTP-Tarpit
+    fi
+    if [ "${TOOLS[TALOS]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-TALOS
+    fi
+    if [ "${TOOLS[ARTILLERY]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-artillery
+    fi
+    if [ "${TOOLS[BEARTRAP]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-beartrap
+    fi
+    if [ "${TOOLS[BEEF]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-beef
+    fi
+    if [ "${TOOLS[COWRIE]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-cowrie
+    fi
+    if [ "${TOOLS[CREEPY]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-creepy
+    fi
+    if [ "${TOOLS[CRYPTOLOCKED]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-cryptolocked
+    fi
+    if [ "${TOOLS[DECLOAK]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-decloak
+    fi
+    if [ "${TOOLS[DEFENSEBYNUMBERS]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-defense-by-numbers
+    fi
+    if [ "${TOOLS[DENYHOSTS]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-denyhosts
+    fi
+    if [ "${TOOLS[DOCZPY]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-docz.py
+    fi
+    if [ "${TOOLS[GCATPOC]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-gcat-poc
+    fi
+    if [ "${TOOLS[GCAT]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-gcat
+    fi
+    if [ "${TOOLS[GHOSTWRITING]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-ghostwriting
+    fi
+    if [ "${TOOLS[HONEYBADGER]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-honeybadger
+    fi
+    if [ "${TOOLS[HONEYPORTS]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-honeyports
+    fi
+    if [ "${TOOLS[HUMANPY]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-human.py
+    fi
+    if [ "${TOOLS[INVISIPORT]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-invisiport
+    fi
+    if [ "${TOOLS[JARCOMBINER]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-jar-combiner
+    fi
+    if [ "${TOOLS[JAVAWEBATTACK]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-java-web-attack
+    fi
+    if [ "${TOOLS[KIPPO]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-kippo
+    fi
+    if [ "${TOOLS[LOCKDOWN]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-lockdown
+    fi
+    if [ "${TOOLS[NOVA]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-nova
+    fi
+    if [ "${TOOLS[OSCHAMELEON]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-oschameleon
+    fi
+    if [ "${TOOLS[PORTSPOOF]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-portspoof
+    fi
+    if [ "${TOOLS[PSAD]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-psad
+    fi
+    if [ "${TOOLS[RECONNG]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-recon-ng
+    fi
+    if [ "${TOOLS[REMUX]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-remux
+    fi
+    if [ "${TOOLS[RUBBERGLUE]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-rubberglue
+    fi
+    if [ "${TOOLS[SIDEJACK]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-sidejack
+    fi
+    if [ "${TOOLS[SIMPLEPIVOTDETECT]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-simple-pivot-detect
+    fi
+    if [ "${TOOLS[SPIDERTRAP]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-spidertrap
+    fi
+    if [ "${TOOLS[SQLITEBUGSERVER]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-sqlitebugserver
+    fi
+    if [ "${TOOLS[SWEEPER]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-sweeper
+    fi
+    if [ "${TOOLS[TCPROOTER]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-tcprooter
+    fi
+    if [ "${TOOLS[WEBBUGSERVER]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-webbugserver
+    fi
+    if [ "${TOOLS[WEBLABYRINTH]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-weblabyrinth
+    fi
+    if [ "${TOOLS[WHOSTHERE]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-whosthere
+    fi
+    if [ "${TOOLS[WINDOWSTOOLS]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-windows-tools
+    fi
+    if [ "${TOOLS[WORDPOT]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-wordpot
+    fi
 
     #post install beef
     if [ "${TOOLS[BEEF]}" == "true" ]
