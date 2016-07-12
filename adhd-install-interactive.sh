@@ -11,7 +11,7 @@
 declare -a TOOLS=( "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
 "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
 "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
-"false" "false" "false" "false" "false" "false" "false" "false" "false" )
+"false" "false" "false" "false" "false" "false" "false" "false" )
 
 # the name of the tools. each tool has a constant value (see below) starting at
 # '1' to match the menu screen. the first one here is "false" because arrays 
@@ -23,7 +23,7 @@ declare -a TOOL_NAMES=( "false" "artillery" "beartrap" "beef" "cowrie" "creepy"
 "jar-combiner" "java-web-attack" "kippo" "lockdown" "msf" "nova" "openbac" 
 "oschameleon" "paros" "php-http-tarpit" "portspoof" "psad" "recon-ng" "remux"
 "rubberglue" "set" "sidejack" "portspoof" "psad" "recon-ng" "remux" "rubberglue"
-"sent.py" "sidejack" "simple-pivot-detect" "spidertrap" "sqlitebugserver"
+"sidejack" "simple-pivot-detect" "spidertrap" "sqlitebugserver"
 "sweeper" "Talos" "tcprooter" "webbugserver" "weblabyrinth" "whosthere"
 "windows-tools" "wordpot" )
 
@@ -60,7 +60,6 @@ PSAD=29
 RECONNG=30
 REMUX=31
 RUBBERGLUE=32
-SENTPY=33
 SET=34 #??
 SIDEJACK=35
 SIMPLEPIVOTDETECT=36
@@ -95,10 +94,10 @@ select_tools ()
     let center=${cols}/2
     let head1_center=${center}-5
     let head2_center=${center}-7
-    let col_space=(${cols}-30)/4   
+    let col_space=(${cols}-45)/4   
     let col1_ind=${col_space}
-    let col2_ind=${col_space}*2+10
-    let col3_ind=${col_space}*3+20
+    let col2_ind=${col_space}*2+15
+    let col3_ind=${col_space}*3+30
     let bot_col1_ind=${col1_ind}/2
     let bot_col2_ind=(${col2_ind}-${col1_ind})/2+${col1_ind}
     let bot_col3_ind=(${col3_ind}-${col2_ind})/2+${col2_ind}
@@ -380,14 +379,6 @@ select_tools ()
 
     # third collumn
 
-    tput cup 7 ${col3_ind}
-    if [ "${TOOLS[SENTPY]}" == "true" ]
-    then
-        echo -e "${GREEN}33) Sent.py${NC}"
-    else
-        echo "33) Sent.py"
-    fi
-
     tput cup 8 ${col3_ind}
     if [ "${TOOLS[SET]}" == "true" ]
     then
@@ -575,7 +566,6 @@ default_install()
     ln -s /opt/recon-ng /adhd/4-attack/recon-ng
     ln -s /opt/remux /adhd/1-annoyance/remux
     ln -s /opt/rubberglue /adhd/1-annoyance/rubberglue
-    ln -s /opt/sent.py /adhd/3-absolution/sent.py
     ln -s /opt/sidejack /adhd/4-attack/sidejack
     ln -s /opt/simple-pivot-detect /adhd/3-absolution/simple-pivot-detect
     ln -s /opt/sqlitebugserver /adhd/2-attribution/sqlitebugserver
@@ -610,9 +600,6 @@ default_install()
 
     #dependencies for lockdown
     pip install splinter
-
-    #dependencies for sent.py
-    pip install nltk
 
     #dependencies for whosthere
     apt-get -y install golang-go
@@ -890,10 +877,6 @@ selected_install ()
     then
         ln -s /opt/rubberglue /adhd/1-annoyance/rubberglue
     fi
-    if [ "${TOOLS[SENTPY]}" == "true" ]
-    then
-        ln -s /opt/sent.py /adhd/3-absolution/sent.py
-    fi
     if [ "${TOOLS[SIDEJACK]}" == "true" ]
     then
         ln -s /opt/sidejack /adhd/4-attack/sidejack
@@ -965,12 +948,6 @@ selected_install ()
     if [ "${TOOLS[LOCKDOWN]}" == "true" ]
     then
         pip install splinter
-    fi
-
-    #dependencies for sent.py
-    if [ "${TOOLS[SENTPY]}" == "true" ]
-    then
-        pip install nltk
     fi
 
     #dependencies for whosthere
@@ -1121,7 +1098,9 @@ EOF
     fi
     if [ "${TOOLS[ARTILLERY]}" == "true" ]
     then
-        apt-get -y --force-yes install adhd-artillery
+        echo -e "${YELLOW}INSTALLING ARTILLERY${NC}"
+        apt-get -y --force-yes install adhd-artillery.deb
+        echo -e "${YELLOW}DONE WITH ARTILLER${NC}"
     fi
     if [ "${TOOLS[BEARTRAP]}" == "true" ]
     then
@@ -1129,7 +1108,9 @@ EOF
     fi
     if [ "${TOOLS[BEEF]}" == "true" ]
     then
-        apt-get -y --force-yes install adhd-beef
+        echo -e "${YELLOW}INSTALLING BEEF${NC}"
+        apt-get -y --force-yes install adhd-beef.deb
+        echo -e "${YELLOW}DONE WITH BEEF${NC}"
     fi
     if [ "${TOOLS[COWRIE]}" == "true" ]
     then
@@ -1320,12 +1301,12 @@ fi
 # user select which tools to install
 select_tools
 install_type=$?
-echo "Return value is $install_type"
+#echo "Return value is $install_type"
 
 # based on the user, how to install
 case $install_type in
     10[0] ) default_install;;
-    10[1] ) echo "Selected tools";;
+    10[1] ) selected_install;;
     99 ) clear; exit;;
     * ) ;;
 esac
