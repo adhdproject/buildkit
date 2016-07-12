@@ -1098,9 +1098,9 @@ EOF
     fi
     if [ "${TOOLS[ARTILLERY]}" == "true" ]
     then
-        echo -e "${YELLOW}INSTALLING ARTILLERY${NC}"
+        #echo -e "${YELLOW}INSTALLING ARTILLERY${NC}"
         apt-get -y --force-yes install adhd-artillery.deb
-        echo -e "${YELLOW}DONE WITH ARTILLER${NC}"
+        #echo -e "${YELLOW}DONE WITH ARTILLER${NC}"
     fi
     if [ "${TOOLS[BEARTRAP]}" == "true" ]
     then
@@ -1108,9 +1108,9 @@ EOF
     fi
     if [ "${TOOLS[BEEF]}" == "true" ]
     then
-        echo -e "${YELLOW}INSTALLING BEEF${NC}"
+        #echo -e "${YELLOW}INSTALLING BEEF${NC}"
         apt-get -y --force-yes install adhd-beef.deb
-        echo -e "${YELLOW}DONE WITH BEEF${NC}"
+        #echo -e "${YELLOW}DONE WITH BEEF${NC}"
     fi
     if [ "${TOOLS[COWRIE]}" == "true" ]
     then
