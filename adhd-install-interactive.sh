@@ -1,15 +1,10 @@
 #!/bin/bash
 
-##Nee to somehow check if apt-get update works
-
 ## GLOBALS ##
 
 # holds whether each tool selected or not
-## this is ugly and i hate it but i can't figure it out now
-#for i in {1...12}
-#do
-#    ${TOOLS[$i]}="false"
-#done
+## this is ugly and i hate it but i can't figure it
+##  out right now how to loop and fill
 declare -a TOOLS=(
 "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
 "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
@@ -17,23 +12,11 @@ declare -a TOOLS=(
 "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
 "false" "false" "false" )
 
-# the name of the tools. each tool has a constant value (see below) starting at
-# '1' to match the menu screen. the first one here is "false" because arrays 
-# start indexing at 0. it's a drag.
-## I would like to use this for the actual individual install
-declare -a TOOL_NAMES=(
-"false" "artillery" "beartrap" "beef" "cowrie"
-"creepy" "cryptolocked" "decloak" "defense-by-numbers" "denyhosts"
-"docz.py" "gcat-poc" "gcat" "ghostwriting" "honeybadger"
-"honeyports" "human.py" "invisiport" "jar-combiner" "java-web-attack"
-"kippo" "lockdown" "nova" "OpenBAC" "oschameleon"
-"PHP-HTTP-Tarpit" "portspoof" "psad" "recon-ng" "remux"
-"rubberglue" "sidejack" "simple-pivot-detect" "spidertrap" "sqlitebugserver"
-"sweeper" "TALOS" "tcprooter" "webbugserver" "weblabyrinth"
-"whosthere" "windows-tools" "wordpot" )
-
-# the number of tools
+# the total number of tools
 NUM_TOOLS=42
+
+# the number of tools selected
+TOOL_COUNT=0
 
 # constant variable for each tool to access the tool set
 ARTILLERY=1
@@ -92,7 +75,8 @@ select_tools ()
     tput clear
 
     # grab the current size of the terminal
-    # adjust measurements
+    # adjust measurements as screen is resized
+    ## i would like to make these more dynamic.
     cols=$(tput cols)
     
     # positions for the headers
@@ -117,12 +101,10 @@ select_tools ()
     # Set the headings
     # move cursor to screen location (y,x)
     tput cup 3 ${head1_center}
-    #tput setaf 3
     echo -e "${YELLOW}ADHD 0.7.1${NC}"
     tput sgr0
 
     tput cup 5 ${head2_center}
-    #tput rev
     echo -e "${YELLOW}Welcome to ADHD${NC}"
     tput sgr0
 
@@ -468,8 +450,7 @@ select_tools ()
         echo "${WORDPOT}) Wordpot"
     fi
 
-    # Bottom Row
-
+    # bottom row
     tput cup 23 ${bot_col1_ind}
     echo "99) Quit"
 
@@ -482,23 +463,25 @@ select_tools ()
     # prompt user to select tools
     tput bold
     tput cup 25 15
+
+    # selects or unselects a tool
     read -p "Which tools to install?: " tool_num
-    # highlights the tool that was selected
-    # i want to be able to unselect items at some point
     case $tool_num in
-        [123456789]|1[0123456789]|2[0123456789]|3[0123456789]|4[012345])
-            #d="$TOOLS[1]";
-            #if [ "$d" == "false" ];
-            #then 
-            #    TOOLS[${tool_num}]="true"
-            #fi
-            #;;
-            ##The line below works
-            #TOOLS[${tool_num}]="true"; continue;;
-            TOOLS[${tool_num}]="true"; select_tools;;
+        [123456789]|1[0123456789]|2[0123456789]|3[0123456789]|4[012])
+            d=${TOOLS[tool_num]};
+            if [ "$d" == "false" ];
+            then 
+                TOOLS[${tool_num}]="true"
+                let TOOL_COUNT=${TOOL_COUNT}+1
+            else
+                TOOLS[${tool_num}]="false"
+                let TOOL_COUNT=${TOOL_COUNT}-1
+            fi;
+            select_tools;;
         # not adding tools.
         # quiting, installing selected tools, or default install
-        99|10[01]|q ) return $tool_num;;
+        99|10[01]) return $tool_num;;
+        # continue for everything else
         * ) select_tools;;
     esac
 }
@@ -506,6 +489,8 @@ select_tools ()
 # perform the default install
 default_install()
 {
+    ## need to somehow figure out if apt-get update works
+    ## i had to apt-get install apt-transport-https
     apt-get update
 
     #install git
@@ -723,13 +708,12 @@ EOF
     git clone https://github.com/adhdproject/webkit /var/www
     apt-get -y install apache2 
     chown www-data:www-data -R /var/www
-
 }
 
 selected_install ()
 {
-    ##put in some check to see if there actually are tools that are selected
-
+    ## somehow figure out if apt-get update works
+    ## i needed to apd-get install apt-transport-https
     apt-get update
 
     #install git
@@ -947,14 +931,14 @@ selected_install ()
         pip install flask
     fi
 
-    #beartrap
+    #dependencies for beartrap
     if [ "${TOOLS[BEARTRAP]}" == "true" ]
     then
         apt-get -y install ruby
         gem install getopt
     fi
 
-    #beef
+    #dependencies for beef
     if [ "${TOOLS[BEEF]}" == "true" ]
     then
         gem install bundler
@@ -968,7 +952,7 @@ selected_install ()
     fi
 
     #database mysql
-    ## need this for everything??
+    ## do we need this for everything?
     debconf-set-selections <<< 'mysql-server mysql-server/root_password password adhd'
     debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password adhd'
     apt-get -y install mysql-server
@@ -1060,15 +1044,17 @@ EOF
 
     # This is where the installing magic happens
     # package has filename X
-    # adhd-X
-    ## I would really like to clean this, be able to do a loop with the 
-    ## array of tools and their tool names, but for now, I'm going to
-    ## have to hardcode until I have a definite list of package names.
+    # apt-get -y --force-yest install adhd-X
+
+    ## I would really like to clean this, be able to
+    ## do a loop with the array of tools and their
+    ## tool names.
+
     if ! grep -q 'neoadhd' /etc/apt/sources.list; then
         echo "deb  https://cdn.rawgit.com/adhdproject/neoadhd/master ./" >> /etc/apt/sources.list
     fi
     apt-get update
-    #apt-get -y --force-yes install adhd-*
+
     if [ "${TOOLS[OPENBAC]}" == "true" ]
     then
         apt-get -y --force-yes install adhd-OpenBAC
@@ -1282,19 +1268,24 @@ fi
 # user select which tools to install
 select_tools
 install_type=$?
-#echo "Return value is $install_type"
 
-# based on the user, how to install
+# based on the user, how to install, or quit
+# for selected install, check if tools were selected
 case $install_type in
-    10[0] ) default_install;;
-    10[1] ) selected_install;;
+    10[0] ) 
+        clear
+        default_install;;
+    10[1] )
+        if [ "${TOOL_COUNT}" -gt "0" ];
+        then
+            clear 
+            selected_install
+        else
+            clear
+            echo "No tools selected,"
+        fi;;
     99 ) clear; exit;;
     * ) ;;
 esac
 
-##just clear for right now
-#tput clear
-#clear
-tput sgr0
-tput rc
 
