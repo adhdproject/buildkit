@@ -1,5 +1,7 @@
 #!/bin/bash
 
+##Nee to somehow check if apt-get update works
+
 ## GLOBALS ##
 
 # holds whether each tool selected or not
@@ -8,24 +10,30 @@
 #do
 #    ${TOOLS[$i]}="false"
 #done
-declare -a TOOLS=( "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
+declare -a TOOLS=(
 "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
 "false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
-"false" "false" "false" "false" "false" "false" "false" "false" )
+"false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
+"false" "false" "false" "false" "false" "false" "false" "false" "false" "false"
+"false" "false" "false" )
 
 # the name of the tools. each tool has a constant value (see below) starting at
 # '1' to match the menu screen. the first one here is "false" because arrays 
 # start indexing at 0. it's a drag.
 ## I would like to use this for the actual individual install
-declare -a TOOL_NAMES=( "false" "artillery" "beartrap" "beef" "cowrie" "creepy"
-"cryptolocked" "decloak" "defense-by-numbers" "denyhosts" "docz.py" "gcat-poc"
-"gcat" "ghostwriting" "honeybadger" "honeyports" "human.py" "invisiport"
-"jar-combiner" "java-web-attack" "kippo" "lockdown" "msf" "nova" "openbac" 
-"oschameleon" "paros" "php-http-tarpit" "portspoof" "psad" "recon-ng" "remux"
-"rubberglue" "set" "sidejack" "portspoof" "psad" "recon-ng" "remux" "rubberglue"
-"sidejack" "simple-pivot-detect" "spidertrap" "sqlitebugserver"
-"sweeper" "Talos" "tcprooter" "webbugserver" "weblabyrinth" "whosthere"
-"windows-tools" "wordpot" )
+declare -a TOOL_NAMES=(
+"false" "artillery" "beartrap" "beef" "cowrie"
+"creepy" "cryptolocked" "decloak" "defense-by-numbers" "denyhosts"
+"docz.py" "gcat-poc" "gcat" "ghostwriting" "honeybadger"
+"honeyports" "human.py" "invisiport" "jar-combiner" "java-web-attack"
+"kippo" "lockdown" "nova" "OpenBAC" "oschameleon"
+"PHP-HTTP-Tarpit" "portspoof" "psad" "recon-ng" "remux"
+"rubberglue" "sidejack" "simple-pivot-detect" "spidertrap" "sqlitebugserver"
+"sweeper" "TALOS" "tcprooter" "webbugserver" "weblabyrinth"
+"whosthere" "windows-tools" "wordpot" )
+
+# the number of tools
+NUM_TOOLS=42
 
 # constant variable for each tool to access the tool set
 ARTILLERY=1
@@ -49,30 +57,27 @@ JARCOMBINER=18
 JAVAWEBATTACK=19
 KIPPO=20
 LOCKDOWN=21
-MSF=22 #??
-NOVA=23
-OPENBAC=24
-OSCHAMELEON=25
-PAROS=26 #??
-PHPHTTPTARPIT=27
-PORTSPOOF=28
-PSAD=29
-RECONNG=30
-REMUX=31
-RUBBERGLUE=32
-SET=34 #??
-SIDEJACK=35
-SIMPLEPIVOTDETECT=36
-SPIDERTRAP=37
-SQLITEBUGSERVER=38
-SWEEPER=39
-TALOS=40 #??
-TCPROOTER=41
-WEBBUGSERVER=42
-WEBLABYRINTH=43
-WHOSTHERE=44
-WINDOWSTOOLS=45
-WORDPOT=46
+NOVA=22
+OPENBAC=23
+OSCHAMELEON=24
+PHPHTTPTARPIT=25
+PORTSPOOF=26
+PSAD=27
+RECONNG=28
+REMUX=29
+RUBBERGLUE=30
+SIDEJACK=31
+SIMPLEPIVOTDETECT=32
+SPIDERTRAP=33
+SQLITEBUGSERVER=34
+SWEEPER=35
+TALOS=36
+TCPROOTER=37
+WEBBUGSERVER=38
+WEBLABYRINTH=39
+WHOSTHERE=40
+WINDOWSTOOLS=41
+WORDPOT=42
 
 # colors
 GREEN='\033[1;32m'
@@ -89,15 +94,21 @@ select_tools ()
     # grab the current size of the terminal
     # adjust measurements
     cols=$(tput cols)
-    lines=$(tput lines)
-    #echo "Cols=${cols} lines=${lines}"
+    
+    # positions for the headers
     let center=${cols}/2
     let head1_center=${center}-5
     let head2_center=${center}-7
-    let col_space=(${cols}-45)/4   
+    
+    # space between the columns
+    let col_space=(${cols}-45)/4
+
+    # the indent for each column   
     let col1_ind=${col_space}
     let col2_ind=${col_space}*2+15
     let col3_ind=${col_space}*3+30
+
+    # indents for the bottom row
     let bot_col1_ind=${col1_ind}/2
     let bot_col2_ind=(${col2_ind}-${col1_ind})/2+${col1_ind}
     let bot_col3_ind=(${col3_ind}-${col2_ind})/2+${col2_ind}
@@ -118,369 +129,343 @@ select_tools ()
     # write the options
     # check if the tool is selected so it can be highlighted green
     # first column
-
     tput cup 7 ${col1_ind}
     if [ "${TOOLS[ARTILLERY]}" == "true" ]
     then
-        echo -e "${GREEN}1) Artillery${NC}"
+        echo -e "${GREEN}${ARTILLERY}) Artillery${NC}"
     else
-        echo "1) Artillery"
+        echo "${ARTILLERY}) Artillery"
     fi
 
     tput cup 8 ${col1_ind}
     if [ "${TOOLS[BEARTRAP]}" == "true" ]
     then
-        echo -e "${GREEN}2) BearTrap${NC}"
+        echo -e "${GREEN}${BEARTRAP}) BearTrap${NC}"
     else
-        echo "2) BearTrap"
+        echo "${BEARTRAP}) BearTrap"
     fi
 
     tput cup 9 ${col1_ind}
     if [ "${TOOLS[BEEF]}" == "true" ]
     then
-        echo -e "${GREEN}3) BeEF${NC}"
+        echo -e "${GREEN}${BEEF}) BeEF${NC}"
     else
-        echo "3) BeEF"
+        echo "${BEEF}) BeEF"
     fi
 
     tput cup 10 ${col1_ind}
     if [ "${TOOLS[COWRIE]}" == "true" ]
     then
-        echo -e "${GREEN}4) Cowire${NC}"
+        echo -e "${GREEN}${COWRIE}) Cowire${NC}"
     else
-        echo "4) Cowire"
+        echo "${COWRIE}) Cowire"
     fi
 
     tput cup 11 ${col1_ind}
     if [ "${TOOLS[CREEPY]}" == "true" ]
     then
-        echo -e "${GREEN}5) Creepy${NC}"
+        echo -e "${GREEN}${CREEPY}) Creepy${NC}"
     else
-        echo "5) Creepy"
+        echo "${CREEPY}) Creepy"
     fi
 
     tput cup 12 ${col1_ind}
     if [ "${TOOLS[CRYPTOLOCKED]}" == "true" ]
     then
-        echo -e "${GREEN}6) Cryptolocked${NC}"
+        echo -e "${GREEN}${CRYPTOLOCKED}) Cryptolocked${NC}"
     else
-        echo "6) Cryptolocked"
+        echo "${CRYPTOLOCKED}) Cryptolocked"
     fi
 
     tput cup 13 ${col1_ind}
     if [ "${TOOLS[DECLOAK]}" == "true" ]
     then
-        echo -e "${GREEN}7) Decloak${NC}"
+        echo -e "${GREEN}${DECLOAK}) Decloak${NC}"
     else
-        echo "7) Decloak"
+        echo "${DECLOAK}) Decloak"
     fi
 
     tput cup 14 ${col1_ind}
     if [ "${TOOLS[DEFENSEBYNUMBERS]}" == "true" ]
     then
-        echo -e "${GREEN}8) Defense By Numbers${NC}"
+        echo -e "${GREEN}${DEFENSEBYNUMBERS}) Defense By Numbers${NC}"
     else
-        echo "8) Defense By Numbers"
+        echo "${DEFENSEBYNUMBERS}) Defense By Numbers"
     fi
 
     tput cup 15 ${col1_ind}
     if [ "${TOOLS[DENYHOSTS]}" == "true" ]
     then
-        echo -e "${GREEN}9) DenyHosts${NC}"
+        echo -e "${GREEN}${DENYHOSTS}) DenyHosts${NC}"
     else
-        echo "9) DenyHosts"
+        echo "${DENYHOSTS}) DenyHosts"
     fi
 
     tput cup 16 ${col1_ind}
     if [ "${TOOLS[DOCZPY]}" == "true" ]
     then
-        echo -e "${GREEN}10) Docz.py${NC}"
+        echo -e "${GREEN}${DOCZPY}) Docz.py${NC}"
     else
-        echo "10) Docz.py"
+        echo "${DOCZPY}) Docz.py"
     fi
 
     tput cup 17 ${col1_ind}
     if [ "${TOOLS[GCATPOC]}" == "true" ]
     then
-        echo -e "${GREEN}11) GCat-POC${NC}"
+        echo -e "${GREEN}${GCATPOC}) GCat-POC${NC}"
     else
-        echo "11) GCat-POC"
+        echo "${GCATPOC}) GCat-POC"
     fi
 
     tput cup 18 ${col1_ind}
     if [ "${TOOLS[GCAT]}" == "true" ]
     then
-        echo -e "${GREEN}12) GCat${NC}"
+        echo -e "${GREEN}${GCAT}) GCat${NC}"
     else
-        echo "12) GCat"
+        echo "${GCAT}) GCat"
     fi
 
     tput cup 19 ${col1_ind}
     if [ "${TOOLS[GHOSTWRITING]}" == "true" ]
     then
-        echo -e "${GREEN}13) Ghostwriting${NC}"
+        echo -e "${GREEN}${GHOSTWRITING}) Ghostwriting${NC}"
     else
-        echo "13) Ghostwriting"
+        echo "${GHOSTWRITING}) Ghostwriting"
     fi
 
     tput cup 20 ${col1_ind}
     if [ "${TOOLS[HONEYBADGER]}" == "true" ]
     then
-        echo -e "${GREEN}14) Honeybadger${NC}"
+        echo -e "${GREEN}${HONEYBADGER}) Honeybadger${NC}"
     else
-        echo "14) Honeybadger"
-    fi
-
-    tput cup 21 ${col1_ind}
-    if [ "${TOOLS[HONEYPORTS]}" == "true" ]
-    then
-        echo -e "${GREEN}15) Honeyports${NC}"
-    else
-        echo "15) Honeyports"
-    fi
-
-    tput cup 22 ${col1_ind}
-    if [ "${TOOLS[HUMANPY]}" == "true" ]
-    then
-        echo -e "${GREEN}16) Human.py${NC}"
-    else
-        echo "16) Human.py"
+        echo "${HONEYBADGER}) Honeybadger"
     fi
 
     # second column
-
     tput cup 7 ${col2_ind}
-    if [ "${TOOLS[INVISIPORT]}" == "true" ]
+    if [ "${TOOLS[HONEYPORTS]}" == "true" ]
     then
-        echo -e "${GREEN}17) Invisiport${NC}"
+        echo -e "${GREEN}${HONEYPORTS}) Honeyports${NC}"
     else
-        echo "17) Invisiport"
+        echo "${HONEYPORTS}) Honeyports"
     fi
 
     tput cup 8 ${col2_ind}
-    if [ "${TOOLS[JARCOMBINER]}" == "true" ]
+    if [ "${TOOLS[HUMANPY]}" == "true" ]
     then
-        echo -e "${GREEN}18) Jar-Combiner${NC}"
+        echo -e "${GREEN}${HUMANPY}) Human.py${NC}"
     else
-        echo "18) Jar-Combiner"
+        echo "${HUMANPY}) Human.py"
     fi
 
     tput cup 9 ${col2_ind}
-    if [ "${TOOLS[JAVAWEBATTACK]}" == "true" ]
+    if [ "${TOOLS[INVISIPORT]}" == "true" ]
     then
-        echo -e "${GREEN}19) Java Web Attack${NC}"
+        echo -e "${GREEN}${INVISIPORT}) Invisiport${NC}"
     else
-        echo "19) Java Web Attack"
+        echo "${INVISIPORT}) Invisiport"
     fi
 
     tput cup 10 ${col2_ind}
-    if [ "${TOOLS[KIPPO]}" == "true" ]
+    if [ "${TOOLS[JARCOMBINER]}" == "true" ]
     then
-        echo -e "${GREEN}20) Kippo${NC}"
+        echo -e "${GREEN}${JARCOMBINER}) Jar-Combiner${NC}"
     else
-        echo "20) Kippo"
+        echo "${JARCOMBINER}) Jar-Combiner"
     fi
 
     tput cup 11 ${col2_ind}
-    if [ "${TOOLS[LOCKDOWN]}" == "true" ]
+    if [ "${TOOLS[JAVAWEBATTACK]}" == "true" ]
     then
-        echo -e "${GREEN}21) Lockdown${NC}"
+        echo -e "${GREEN}${JAVAWEBATTACK}) Java Web Attack${NC}"
     else
-        echo "21) Lockdown"
+        echo "${JAVAWEBATTACK}) Java Web Attack"
     fi
 
     tput cup 12 ${col2_ind}
-    if [ "${TOOLS[MSF]}" == "true" ]
+    if [ "${TOOLS[KIPPO]}" == "true" ]
     then
-        echo -e "${GREEN}22) MSF${NC}"
+        echo -e "${GREEN}${KIPPO}) Kippo${NC}"
     else
-        echo "22) MSF"
+        echo "${KIPPO}) Kippo"
     fi
 
     tput cup 13 ${col2_ind}
-    if [ "${TOOLS[NOVA]}" == "true" ]
+    if [ "${TOOLS[LOCKDOWN]}" == "true" ]
     then
-        echo -e "${GREEN}23) Nova${NC}"
+        echo -e "${GREEN}${LOCKDOWN}) Lockdown${NC}"
     else
-        echo "23) Nova"
+        echo "${LOCKDOWN}) Lockdown"
     fi
 
     tput cup 14 ${col2_ind}
-    if [ "$TOOLS[OPENBAC]}" == "true" ]
+    if [ "${TOOLS[NOVA]}" == "true" ]
     then
-        echo -e "${GREEN}24) OpenBAC${NC}"
+        echo -e "${GREEN}${NOVA}) Nova${NC}"
     else
-        echo "24) OpenBAC"
+        echo "${NOVA}) Nova"
     fi
 
     tput cup 15 ${col2_ind}
-    if [ "${TOOLS[OSCHAMELEON]}" == "true" ]
+    if [ "${TOOLS[OPENBAC]}" == "true" ]
     then
-        echo -e "${GREEN}25) Oschameleon${NC}"
+        echo -e "${GREEN}${OPENBAC}) OpenBAC${NC}"
     else
-        echo "25) Oschameleon"
+        echo "${OPENBAC}) OpenBAC"
     fi
 
     tput cup 16 ${col2_ind}
-    if [ "${TOOLS[PAROS]}" == "true" ]
+    if [ "${TOOLS[OSCHAMELEON]}" == "true" ]
     then
-        echo -e "${GREEN}26) PAROS${NC}"
+        echo -e "${GREEN}${OSCHAMELEON}) Oschameleon${NC}"
     else
-        echo "26) PAROS"
+        echo "${OSCHAMELEON}) Oschameleon"
     fi
 
     tput cup 17 ${col2_ind}
     if [ "${TOOLS[PHPHTTPTARPIT]}" == "true" ]
     then
-        echo -e "${GREEN}27) PHP-HTTP-Tarpit${NC}"
+        echo -e "${GREEN}${PHPHTTPTARPIT}) PHP-HTTP-Tarpit${NC}"
     else
-        echo "27) PHP-HTTP-Tarpit"
+        echo "${PHPHTTPTARPIT}) PHP-HTTP-Tarpit"
     fi
 
     tput cup 18 ${col2_ind}
     if [ "${TOOLS[PORTSPOOF]}" == "true" ]
     then
-        echo -e "${GREEN}28) Portspoof${NC}"
+        echo -e "${GREEN}${PORTSPOOF}) Portspoof${NC}"
     else
-        echo "28) Portspoof"
+        echo "${PORTSPOOF}) Portspoof"
     fi
 
     tput cup 19 ${col2_ind}
     if [ "${TOOLS[PSAD]}" == "true" ]
     then
-        echo -e "${GREEN}29) PSAD${NC}"
+        echo -e "${GREEN}${PSAD}) PSAD${NC}"
     else
-        echo "29) PSAD"
+        echo "${PSAD}) PSAD"
     fi
 
     tput cup 20 ${col2_ind}
     if [ "${TOOLS[RECONNG]}" == "true" ]
     then
-        echo -e "${GREEN}30) Recon-ng${NC}"
+        echo -e "${GREEN}${RECONNG}) Recon-ng${NC}"
     else
-        echo "30) Recon-ng"
+        echo "${RECONNG}) Recon-ng"
     fi
 
-    tput cup 21 ${col2_ind}
+    # third column
+    tput cup 7 ${col3_ind}
     if [ "${TOOLS[REMUX]}" == "true" ]
     then
-        echo -e "${GREEN}31) Remux${NC}"
+        echo -e "${GREEN}${REMUX}) Remux${NC}"
     else
-        echo "31) Remux"
+        echo "${REMUX}) Remux"
     fi
 
-    tput cup 22 ${col2_ind}
+    # third column
+    tput cup 8 ${col3_ind}
     if [ "${TOOLS[RUBBERGLUE]}" == "true" ]
     then
-        echo -e "${GREEN}32) Rubberglue${NC}"
+        echo -e "${GREEN}${RUBBERGLUE}) Rubberglue${NC}"
     else
-        echo "32) Ruberglue"
-    fi
-
-    # third collumn
-
-    tput cup 8 ${col3_ind}
-    if [ "${TOOLS[SET]}" == "true" ]
-    then
-        echo -e "${GREEN}34) SET${NC}"
-    else
-        echo "34) SET"
+        echo "${RUBBERGLUE}) Ruberglue"
     fi
 
     tput cup 9 ${col3_ind}
     if [ "${TOOLS[SIDEJACK]}" == "true" ]
     then
-        echo -e "${GREEN}35) Sidejack${NC}"
+        echo -e "${GREEN}${SIDEJACK}) Sidejack${NC}"
     else
-        echo "35) Sidejack"
+        echo "${SIDEJACK}) Sidejack"
     fi
 
     tput cup 10 ${col3_ind}
     if [ "${TOOLS[SIMPLEPIVOTDETECT]}" == "true" ]
     then
-        echo -e "${GREEN}36) Simple-Pivot-Detect${NC}"
+        echo -e "${GREEN}${SIMPLEPIVOTDETECT}) Simple-Pivot-Detect${NC}"
     else
-        echo "36) Simple-Pivot-Detect"
+        echo "${SIMPLEPIVOTDETECT}) Simple-Pivot-Detect"
     fi
 
     tput cup 11 ${col3_ind}
     if [ "${TOOLS[SPIDERTRAP]}" == "true" ]
     then
-        echo -e "${GREEN}37) Spidertrap${NC}"
+        echo -e "${GREEN}${SPIDERTRAP}) Spidertrap${NC}"
     else
-        echo "37) Spidertrap"
+        echo "${SPIDERTRAP}) Spidertrap"
     fi
 
     tput cup 12 ${col3_ind}
     if [ "${TOOLS[SQLITEBUGSERVER]}" == "true" ]
     then
-        echo -e "${GREEN}38) SQLite Bug Server${NC}"
+        echo -e "${GREEN}${SQLITEBUGSERVER}) SQLite Bug Server${NC}"
     else
-        echo "38) SQLite Bug Server"
+        echo "${SQLITEBUGSERVER}) SQLite Bug Server"
     fi
 
     tput cup 13 ${col3_ind}
     if [ "${TOOLS[SWEEPER]}" == "true" ]
     then
-        echo -e "${GREEN}39) Sweeper${NC}"
+        echo -e "${GREEN}${SWEEPER}) Sweeper${NC}"
     else
-        echo "39) Sweeper"
+        echo "${SWEEPER}) Sweeper"
     fi
 
     tput cup 14 ${col3_ind}
     if [ "${TOOLS[TALOS]}" == "true" ]
     then
-        echo -e "${GREEN}40) TALOS${NC}"
+        echo -e "${GREEN}${TALOS}) TALOS${NC}"
     else
-        echo "40) TALOS"
+        echo "${TALOS}) TALOS"
     fi
 
     tput cup 15 ${col3_ind}
     if [ "${TOOLS[TCPROOTER]}" == "true" ]
     then
-        echo -e "${GREEN}41) TCPRooter${NC}"
+        echo -e "${GREEN}${TCPROOTER}) TCPRooter${NC}"
     else
-        echo "41) TCPRooter"
+        echo "${TCPROOTER}) TCPRooter"
     fi
 
     tput cup 16 ${col3_ind}
     if [ "${TOOLS[WEBBUGSERVER]}" == "true" ]
     then
-        echo -e "${GREEN}42) Web Bug Server${NC}"
+        echo -e "${GREEN}${WEBBUGSERVER}) Web Bug Server${NC}"
     else
-        echo "42) Web Bug Server"
+        echo "${WEBBUGSERVER}) Web Bug Server"
     fi
 
     tput cup 17 ${col3_ind}
     if [ "${TOOLS[WEBLABYRINTH]}" == "true" ]
     then
-        echo -e "${GREEN}43) Weblabyrinth${NC}"
+        echo -e "${GREEN}${WEBLABYRINTH}) Weblabyrinth${NC}"
     else
-        echo "43) Weblabyrinth"
+        echo "${WEBLABYRINTH}) Weblabyrinth"
     fi
 
     tput cup 18 ${col3_ind}
     if [ "${TOOLS[WHOSTHERE]}" == "true" ]
     then
-        echo -e "${GREEN}44) Who's There${NC}"
+        echo -e "${GREEN}${WHOSTHERE}) Who's There${NC}"
     else
-        echo "44) Who's There"
+        echo "${WHOSTHERE}) Who's There"
     fi
 
     tput cup 19 ${col3_ind}
     if [ "${TOOLS[WINDOWSTOOLS]}" == "true" ]
     then
-        echo -e "${GREEN}45) Windows-Tools${NC}"
+        echo -e "${GREEN}${WINDOWSTOOLS}) Windows-Tools${NC}"
     else
-        echo "45) Windows-Tools"
+        echo "${WINDOWSTOOLS}) Windows-Tools"
     fi
 
     tput cup 20 ${col3_ind}
     if [ "${TOOLS[WORDPOT]}" == "true" ]
     then
-        echo -e "${GREEN}46) Wordpot${NC}"
+        echo -e "${GREEN}${WORDPOT}) Wordpot${NC}"
     else
-        echo "46) Wordpot"
+        echo "${WORDPOT}) Wordpot"
     fi
 
     # Bottom Row
@@ -1098,9 +1083,7 @@ EOF
     fi
     if [ "${TOOLS[ARTILLERY]}" == "true" ]
     then
-        #echo -e "${YELLOW}INSTALLING ARTILLERY${NC}"
-        apt-get -y --force-yes install adhd-artillery.deb
-        #echo -e "${YELLOW}DONE WITH ARTILLER${NC}"
+        apt-get -y --force-yes install adhd-artillery
     fi
     if [ "${TOOLS[BEARTRAP]}" == "true" ]
     then
@@ -1108,9 +1091,7 @@ EOF
     fi
     if [ "${TOOLS[BEEF]}" == "true" ]
     then
-        #echo -e "${YELLOW}INSTALLING BEEF${NC}"
-        apt-get -y --force-yes install adhd-beef.deb
-        #echo -e "${YELLOW}DONE WITH BEEF${NC}"
+        apt-get -y --force-yes install adhd-beef
     fi
     if [ "${TOOLS[COWRIE]}" == "true" ]
     then
