@@ -594,7 +594,12 @@ default_install()
     apt-get -y install ruby-dev libsqlite3-dev libsqlite-dev
 
     #decloak
+    if [ $ubuntu_version == "16.04" ]; then
+    apt-get -y install openjdk-8-jdk
+    fi
+    if [ $ubuntu_version == "15.10" ]; then
     apt-get -y install openjdk-7-jdk
+    fi
 
     #database mysql
     debconf-set-selections <<< 'mysql-server mysql-server/root_password password adhd'
