@@ -67,6 +67,11 @@ GREEN='\033[1;32m'
 NC='\033[0m'
 YELLOW='\033[1;33m'
 
+## Get ubuntu version number ##
+ubuntu_version=`lsb_release -a 2>/dev/null | grep release -i | cut -f2`
+if [ -z "$ubuntu_version" ]; then ubuntu_version="15.10"; fi
+
+
 ## FUNCTIONS ##
 
 select_tools ()
@@ -690,7 +695,7 @@ EOF
 
     #post install beef
     cd /opt/beef
-    bundle install
+    bundle update
 
     #post install www
     chown www-data:www-data /var/www -R
@@ -895,11 +900,25 @@ selected_install ()
     fi
 
     apt-get -y install python-dev
+
+    if [ $ubuntu_version == "16.04" ]; then
+    apt-get -y install php
+    apt-get -y install php-mysql
+    apt-get -y install php7.0-pgsql
+    apt-get -y install php7.0-sqlite
+    apt-get -y install php7.0-odbc
+    fi
+
+
+
+
+    if [ $ubuntu_version == "15.10" ]; then
     apt-get -y install php5
     apt-get -y install php5-mysql
     apt-get -y install php5-pgsql
     apt-get -y install php5-sqlite
     apt-get -y install php5-odbc
+    fi
 
     echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
 
