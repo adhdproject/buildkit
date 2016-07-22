@@ -17,5 +17,6 @@ Fixed minor bug with decloak
 Removed references to nova in documentation
 Added system wide password change macros
 Patched compatibility with github
-
+##Revision 1
+Install script prompts for user account.
 

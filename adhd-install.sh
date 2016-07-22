@@ -7,6 +7,26 @@ fi
 ubuntu_version=`lsb_release -a 2>/dev/null | grep release -i | cut -f2`
 if [ -z "$ubuntu_version" ]; then ubuntu_version="15.10"; fi
 
+echo "This script will need to associate a user account with all the tools."
+echo "Enter the name of a user account you want associated with the install."
+echo "If you enter a new account name... It will be created." 
+echo -n "Enter account name [adhd]: "
+read account
+echo
+
+if [ ${#account} == 0 ]; then
+account="adhd"
+fi
+
+grepout=`grep "^$account:x" /etc/passwd`
+
+if [ ${#grepout} == 0 ]; then
+echo 
+echo "Script is creating user: $account"
+useradd $account
+passwd $account
+fi
+
 apt-get update
 
 #install git
@@ -241,10 +261,9 @@ make
 make install
 
 #post install
-#chown adhd:adhd /opt -R
 git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
 git clone https://github.com/rapid7/metasploit-framework /opt/metasploit
 git clone https://github.com/adhdproject/webkit /var/www
 apt-get -y install apache2 
 chown www-data:www-data -R /var/www
-
+chown $account:$account -R /opt
