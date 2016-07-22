@@ -571,6 +571,7 @@ default_install()
 	
 	#dependencies for TALOS
 	pip install netaddr
+	pip install twisted
 
     #dependencies for creepy
     apt-get -y install python-qt4 python-pip
