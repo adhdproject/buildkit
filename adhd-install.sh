@@ -107,7 +107,7 @@ fi
 echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
 
 #dependencies for metasploit
-apt-get -y libpq-dev libpcap-dev
+apt-get -y install libpq-dev libpcap-dev
 
 #dependencies for oschaemeleon
 apt-get -y install python-nfqueue python-gevent
