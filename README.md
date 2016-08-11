@@ -3,11 +3,11 @@ Currently, only Ubuntu versions 16.04 LTS and 15.10 32-bit are explicitly suppor
 As always, read the script before blindly executing code from the internet but here is the one-liner to bootstrap your ADHD installation.
 
 ```
-curl -sL https://raw.githubusercontent.com/adhdproject/buildkit/master/adhd-install.sh | sudo bash -s
+bash -c "$(curl -sL https://raw.githubusercontent.com/adhdproject/buildkit/master/adhd-install.sh)"
 ```
 
 Alternatively, you can execute the interactive install with this line
 
 ```
-curl -sL https://raw.githubusercontent.com/adhdproject/buildkit/master/interactive-adhd-install.sh | sudo bash -s
+bash -c "$(curl -sL https://raw.githubusercontent.com/adhdproject/buildkit/master/interactive-adhd-install.sh)"
 ```
