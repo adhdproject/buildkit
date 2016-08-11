@@ -563,15 +563,18 @@ default_install()
 
     echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
 
+    #dependencies for metasploit
+    apt-get -y install libpq-dev libpcap-dev
+
     #dependencies for oschaemeleon
     apt-get -y install python-nfqueue python-gevent
 
     #dependencies for whosthere
     apt-get -y install golang
 	
-	#dependencies for TALOS
-	pip install netaddr
-	pip install twisted
+    #dependencies for TALOS
+    pip install netaddr
+    pip install twisted
 
     #dependencies for creepy
     apt-get -y install python-qt4 python-pip
@@ -596,7 +599,7 @@ default_install()
 
     #decloak
     if [ $ubuntu_version == "16.04" ]; then
-    apt-get -y install openjdk-8-jdk
+    apt-get -y install openjdk-8-jdk libdbd-pg-perl
     fi
     if [ $ubuntu_version == "15.10" ]; then
     apt-get -y install openjdk-7-jdk
@@ -692,6 +695,11 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 EOF
 
+cd /etc/postgresql/*/main/
+sed -i '/local   all             all                                     peer/c\local   all             all                                     md5\' pg_hba.conf
+cd -
+service postgresql restart
+
 
     if ! grep -q 'neoadhd' /etc/apt/sources.list; then
         echo "deb  https://cdn.rawgit.com/adhdproject/neoadhd/master ./" >> /etc/apt/sources.list
@@ -722,6 +730,23 @@ EOF
     git clone https://github.com/adhdproject/webkit /var/www
     apt-get -y install apache2 
     chown www-data:www-data -R /var/www
+
+
+    echo "<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www
+
+        <Directory /var/www>
+                AllowOverride all
+
+
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
+    service apache2 restart
 }
 
 selected_install ()
@@ -908,8 +933,8 @@ selected_install ()
     apt-get -y install python-dev
 
     if [ $ubuntu_version == "16.04" ]; then
-    apt-get -y install php
-    apt-get -y install php-mysql
+    apt-get -y install libapache2-mod-php
+    apt-get -y install php7.0-mysql
     apt-get -y install php7.0-pgsql
     apt-get -y install php7.0-sqlite
     apt-get -y install php7.0-odbc
@@ -1260,6 +1285,7 @@ EOF
     fi
 
     #post install www
+    a2enmod rewrite #labyrinth
     chown www-data:www-data /var/www -R
 
     #post kippo
@@ -1281,6 +1307,8 @@ EOF
     #chown adhd:adhd /opt -R
     git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
     git clone https://github.com/rapid7/metasploit-framework /opt/metasploit
+    cd /opt/metasploit
+    bundle install
     git clone https://github.com/adhdproject/webkit /var/www
     apt-get -y install apache2 
     chown www-data:www-data -R /var/www
