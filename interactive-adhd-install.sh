@@ -730,7 +730,9 @@ service postgresql restart
     git clone https://github.com/adhdproject/webkit /var/www
     apt-get -y install apache2 
     chown www-data:www-data -R /var/www
-
+    a2enmod php7.0
+    a2dismod mpm_event
+    a2enmod mpm_prefork
 
     echo "<VirtualHost *:80>
         ServerAdmin webmaster@localhost
@@ -742,8 +744,8 @@ service postgresql restart
 
         </Directory>
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        ErrorLog \${APACHE_LOG_DIR}/error.log
+        CustomLog \${APACHE_LOG_DIR}/access.log combined
 
     </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
     service apache2 restart

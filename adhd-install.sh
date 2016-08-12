@@ -283,19 +283,19 @@ git clone https://github.com/adhdproject/webkit /var/www
 apt-get -y install apache2 
 chown www-data:www-data -R /var/www
 chown $account:$account -R /opt
-
+a2enmod php7.0
+a2dismod mpm_event
+a2enmod mpm_prefork
 echo "<VirtualHost *:80>
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www
 
         <Directory /var/www>
                 AllowOverride all
-
-
         </Directory>
 
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        ErrorLog /var/log/apache2/error.log
+        CustomLog /var/log/apache2/access.log combined
 
 </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 service apache2 restart
