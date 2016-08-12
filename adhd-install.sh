@@ -290,12 +290,23 @@ echo "<VirtualHost *:80>
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www
 
-        <Directory /var/www>
-                AllowOverride all
-        </Directory>
+	DirectoryIndex index.php
+	
 
-        ErrorLog /var/log/apache2/error.log
-        CustomLog /var/log/apache2/access.log combined
+        <Directory /var/www>
+                Options -Indexes +FollowSymLinks -MultiViews
+		AllowOverride all
+		Order allow,deny
+		Allow from all
+        	
+	</Directory>
+
+	<Directory /var/www/honeybadger>
+		RedirectMatch 404 /(\\.git|include|data|admin)
+	</Directory>
+
+        ErrorLog \${APACHE_LOG_DIR}/error.log
+        CustomLog \${APACHE_LOG_DIR}/access.log combined
 
 </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 service apache2 restart

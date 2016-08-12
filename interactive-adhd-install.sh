@@ -737,12 +737,20 @@ service postgresql restart
     echo "<VirtualHost *:80>
         ServerAdmin webmaster@localhost
         DocumentRoot /var/www
+	DirectoryIndex index.php
+
 
         <Directory /var/www>
+		Options -Indexes +FollowSymLinks -MultiViews
                 AllowOverride all
-
+		Order allow,deny
+		Allow from all
 
         </Directory>
+
+	<Directory /var/www/honeybadger>
+		RedirectMatch 404 /(\\.git|include|data|admin)
+	</Directory>
 
         ErrorLog \${APACHE_LOG_DIR}/error.log
         CustomLog \${APACHE_LOG_DIR}/access.log combined
