@@ -748,6 +748,10 @@ service postgresql restart
 
         </Directory>
 
+	<Directory /var/www/windows_tools>
+		Options +Indexes
+	</Directory>
+
 	<Directory /var/www/honeybadger>
 		RedirectMatch 404 /(\\.git|include|data|admin)
 	</Directory>
