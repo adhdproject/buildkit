@@ -494,7 +494,7 @@ select_tools ()
 # perform the default install
 default_install()
 {
-	bash ./adhd-install.sh
+	bash -c "$(curl -sL https://raw.githubusercontent.com/adhdproject/buildkit/master/adhd-install.sh)"
 }
 
 selected_install ()
