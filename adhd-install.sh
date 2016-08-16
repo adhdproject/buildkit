@@ -115,19 +115,16 @@ apt-get -y install python-nfqueue python-gevent
 #dependencies for whosthere
 apt-get -y install golang
 
-#dependencies for TALOS
-pip install netaddr
-pip install twisted
-
 #dependencies for creepy
 apt-get -y install python-qt4 python-pip
 pip install pytz python-qt flickrapi python-instagram yapsy tweepy google-api-python-client python-dateutil configobj dominate
 
+#dependencies for TALOS
+pip install netaddr
+pip install twisted
+
 #dependencies for lockdown
 pip install splinter
-
-#dependencies for sent.py
-pip install nltk
 
 #dependencies for whosthere
 apt-get -y install golang-go
