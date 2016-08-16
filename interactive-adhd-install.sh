@@ -736,6 +736,13 @@ selected_install ()
         apt-get -y install python-qt4 python-pip
         pip install pytz python-qt flickrapi python-instagram yapsy tweepy google-api-python-client python-dateutil configobj dominate
     fi
+    
+    #dependencies for TALOS
+    if [ "${TOOLS[TALOS]}" == "true" ]
+    then
+        pip install netaddr
+        pip install twisted
+    fi
 
     #dependencies for lockdown
     if [ "${TOOLS[LOCKDOWN]}" == "true" ]
