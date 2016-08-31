@@ -882,7 +882,7 @@ EOF
     ## tool names.
 
     if ! grep -q 'neoadhd' /etc/apt/sources.list; then
-        echo "deb  https://cdn.rawgit.com/adhdproject/neoadhd/master ./" >> /etc/apt/sources.list
+        echo "deb  http://anonymoustaunts.com/neoadhd ./" >> /etc/apt/sources.list
     fi
     apt-get update
 
