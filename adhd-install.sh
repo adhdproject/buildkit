@@ -263,6 +263,7 @@ chown www-data:www-data /var/www -R
 
 #post kippo
 apt-get -y install python-twisted
+pip install -I twisted==9.0.0
 
 #Install portspoof
 cd /opt/portspoof

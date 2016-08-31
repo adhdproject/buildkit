@@ -1070,6 +1070,7 @@ EOF
     if [ "${TOOLS[KIPPO]}" == "true" ]
     then
         apt-get -y install python-twisted
+    	pip install -I twisted==9.0.0
     fi
 
     #Install portspoof
