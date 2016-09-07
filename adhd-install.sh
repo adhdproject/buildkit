@@ -109,6 +109,11 @@ echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
 #dependencies for metasploit
 apt-get -y install libpq-dev libpcap-dev
 
+#dependencies for cowrie
+apt-get -y install libmpfr-dev
+apt-get -y install libmpc-dev
+pip install twisted[conch] cryptography configparser pyopenssl gmpy2 service_identity pycrypto
+
 #dependencies for oschaemeleon
 apt-get -y install python-nfqueue python-gevent
 
@@ -132,6 +137,9 @@ apt-get -y install golang-go
 #dependencies for wordpot
 pip install flask
 
+#dependencies for honeyports
+apt-get -y install arpspoof
+
 #beartrap
 apt-get -y install ruby
 gem install getopt
@@ -141,6 +149,7 @@ gem install bundler
 apt-get -y install ruby-dev libsqlite3-dev libsqlite-dev
 
 #decloak
+apt-get -y install haxe
 if [ $ubuntu_version == "15.10" ]; then
 apt-get -y install openjdk-7-jdk
 fi

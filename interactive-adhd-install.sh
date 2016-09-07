@@ -530,7 +530,7 @@ selected_install ()
     apt-get -y install git
 
     #general dependencies
-    apt-get -y install sqlite3 sqlite
+    apt-get -y install sqlite3 sqlite libmpfr-dev libmpc-dev
 
     cd /
     mkdir adhd
@@ -730,6 +730,9 @@ selected_install ()
     #dependencies for whosthere
     apt-get -y install golang
 
+    #dependencies for cowrie
+    pip install twisted[conch] cryptography configparser pyopenssl gmpy2 service_identity
+
     #dependencies for creepy
     if [ "${TOOLS[CREEPY]}" == "true" ]
     then
@@ -776,10 +779,17 @@ selected_install ()
         apt-get -y install ruby-dev libsqlite3-dev libsqlite-dev
     fi
 
+    #dependencies for honeyports
+    if [ "${TOOLS[HONEYPORTS]}" == "true" ]
+    then
+        apt-get -y install arpspoof
+    fi
+
     #decloak
     if [ "${TOOLS[DECLOAK]}" == "true" ]
     then
-        apt-get -y install openjdk-7-jdk
+        
+	apt-get -y install openjdk-7-jdk openjdk-8-jdk haxe
     fi
 
     #database mysql
