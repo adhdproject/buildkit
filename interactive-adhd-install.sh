@@ -724,7 +724,7 @@ selected_install ()
     echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
 
     #dependencies for oschaemeleon
-    apt-get -y install python-nfqueue python-gevent
+    apt-get -y install python-nfqueue python-gevent python-scapy
 
     #dependencies for whosthere
     apt-get -y install golang

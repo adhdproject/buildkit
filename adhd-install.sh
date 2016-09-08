@@ -115,7 +115,7 @@ pip install twisted[conch] cryptography configparser pyopenssl gmpy2 service_ide
 apt-get -y install git python-twisted python-configparser python-crypto python-pyasn1 python-gmpy2 python-mysqldb python-zope.interface
 
 #dependencies for oschaemeleon
-apt-get -y install python-nfqueue python-gevent
+apt-get -y install python-nfqueue python-gevent python-scapy
 
 #dependencies for whosthere
 apt-get -y install golang
