@@ -516,8 +516,7 @@ selected_install ()
     if [ ${#grepout} == 0 ]; then
     echo
     echo "Script is creating user: $account"
-    useradd $account
-    passwd $account
+    adduser $account
     fi
 
 
@@ -731,7 +730,9 @@ selected_install ()
     apt-get -y install golang
 
     #dependencies for cowrie
+    apt-get -y install git virtualenv libmpfr-dev libssl-dev libmpc-dev libffi-dev build-essential libpython-dev
     pip install twisted[conch] cryptography configparser pyopenssl gmpy2 service_identity
+    apt-get -y install git python-twisted python-configparser python-crypto python-pyasn1 python-gmpy2 python-mysqldb python-zope.interface
 
     #dependencies for creepy
     if [ "${TOOLS[CREEPY]}" == "true" ]
@@ -1070,6 +1071,13 @@ EOF
     then
         cd /opt/beef
         bundle install
+    fi
+
+    #post cowrie
+    if [ "${TOOLS[COWRIE]}" == "true" ]
+    then
+       cd /opt/cowrie/data
+       ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key
     fi
 
     #post install www

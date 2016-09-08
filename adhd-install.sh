@@ -23,8 +23,7 @@ grepout=`grep "^$account:x" /etc/passwd`
 if [ ${#grepout} == 0 ]; then
 echo 
 echo "Script is creating user: $account"
-useradd $account
-passwd $account
+adduser $account
 fi
 
 apt-get update
@@ -110,9 +109,10 @@ echo "127.0.0.1     spy.decloak.net" >> /etc/hosts
 apt-get -y install libpq-dev libpcap-dev
 
 #dependencies for cowrie
-apt-get -y install libmpfr-dev
+apt-get -y install libmpfr-dev virtualenv libssl-dev libffi-dev buildessential libpython-dev
 apt-get -y install libmpc-dev
 pip install twisted[conch] cryptography configparser pyopenssl gmpy2 service_identity pycrypto
+apt-get -y install git python-twisted python-configparser python-crypto python-pyasn1 python-gmpy2 python-mysqldb python-zope.interface
 
 #dependencies for oschaemeleon
 apt-get -y install python-nfqueue python-gevent
@@ -266,6 +266,9 @@ bundle update
 #post install labyrinth
 a2enmod rewrite
 
+#post install cowrie
+cd /opt/cowrie/data
+ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key
 
 #post install www
 chown www-data:www-data /var/www -R
