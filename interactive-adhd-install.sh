@@ -1089,7 +1089,7 @@ EOF
     fi
 
     #post install www
-    a2enmod rewrite #labyrinth
+    #a2enmod rewrite #labyrinth
     chown www-data:www-data /var/www -R
 
     #post kippo
@@ -1112,7 +1112,7 @@ EOF
     #chown adhd:adhd /opt -R
     git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
     cd /opt/set
-    ./setup.py install
+    ./setoolkit & sleep 5 && killall python
     cd /etc/setoolkit
     sed -i '/METASPLOIT_PATH/c\METASPLOIT_PATH=/opt/metasploit\' ./set.config
     cd -
@@ -1128,6 +1128,7 @@ EOF
     a2enmod php7.0
     a2dismod mpm_event
     a2enmod mpm_prefork
+    a2enmod rewrite #labyrinth
 
      echo "<VirtualHost *:80>
         ServerAdmin webmaster@localhost

@@ -269,7 +269,7 @@ apt-get -y install libxml2-dev libxslt1-dev
 pip install -r REQUIREMENTS
 
 #post install labyrinth
-a2enmod rewrite
+#a2enmod rewrite
 
 #post install cowrie
 cd /opt/cowrie/data
@@ -291,7 +291,7 @@ make install
 #post install
 git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
 cd /opt/set
-./setup.py install
+./setoolkit & sleep 5 && killall python
 cd /etc/setoolkit
 sed -i '/METASPLOIT_PATH/c\METASPLOIT_PATH=/opt/metasploit\' ./set.config
 cd -
@@ -303,6 +303,7 @@ git clone https://github.com/adhdproject/webkit /var/www
 apt-get -y install apache2 
 chown www-data:www-data -R /var/www
 chown $account:$account -R /opt
+a2enmod rewrite #for labyrinth
 a2enmod php7.0
 a2dismod mpm_event
 a2enmod mpm_prefork
