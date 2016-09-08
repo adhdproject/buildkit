@@ -263,6 +263,11 @@ apt-get -y --force-yes install adhd-*
 cd /opt/beef
 bundle update
 
+#post install recon-ng
+cd /opt/recon-ng
+apt-get -y install libxml2-dev libxslt1-dev
+pip install -r REQUIREMENTS
+
 #post install labyrinth
 a2enmod rewrite
 
@@ -285,6 +290,11 @@ make install
 
 #post install
 git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
+cd /opt/set
+./setup.py install
+cd /etc/setoolkit
+sed -i '/METASPLOIT_PATH/c\METASPLOIT_PATH=/opt/metasploit\' ./set.config
+cd -
 git clone https://github.com/rapid7/metasploit-framework /opt/metasploit
 cd /opt/metasploit
 bundle install

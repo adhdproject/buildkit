@@ -1073,6 +1073,14 @@ EOF
         bundle install
     fi
 
+    #post install recon-ng
+    if [ "${TOOLS[RECON-NG]}" == "true" ]
+    then
+	cd /opt/recon-ng
+        apt-get -y install libxml2-dev libxslt1-dev
+        pip install -r REQUIREMENTS
+    fi
+
     #post cowrie
     if [ "${TOOLS[COWRIE]}" == "true" ]
     then
@@ -1103,6 +1111,13 @@ EOF
     #post install
     #chown adhd:adhd /opt -R
     git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
+    cd /opt/set
+    ./setup.py install
+    cd /etc/setoolkit
+    sed -i '/METASPLOIT_PATH/c\METASPLOIT_PATH=/opt/metasploit\' ./set.config
+    cd -
+	
+
     git clone https://github.com/rapid7/metasploit-framework /opt/metasploit
     cd /opt/metasploit
     bundle install
