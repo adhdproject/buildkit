@@ -266,6 +266,8 @@ bundle update
 #post install artillery
 cd /opt/artillery
 ./adhd_setup.py
+sed -i 's/BAN="OFF"/BAN="ON"/g' /var/artillery/config
+
 
 #post install recon-ng
 cd /opt/recon-ng
