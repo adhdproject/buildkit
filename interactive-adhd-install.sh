@@ -1081,6 +1081,13 @@ EOF
 	sed -i 's/BAN="OFF"/BAN="ON"/g' /var/artillery/config
     fi
 
+    #post install psad
+    if [ "${TOOLS[PSAD]}" == "true" ]
+    then
+	apt-get install cpanminus
+	cpanm Date::Calc
+    fi
+
     #post install recon-ng
     if [ "${TOOLS[RECON-NG]}" == "true" ]
     then

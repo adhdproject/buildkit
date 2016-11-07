@@ -268,6 +268,9 @@ cd /opt/artillery
 ./adhd_setup.py
 sed -i 's/BAN="OFF"/BAN="ON"/g' /var/artillery/config
 
+#post install psad
+apt-get install cpanminus
+cpanm Date::Calc
 
 #post install recon-ng
 cd /opt/recon-ng
