@@ -263,6 +263,10 @@ apt-get -y --force-yes install adhd-*
 cd /opt/beef
 bundle update
 
+#post install artillery
+cd /opt/artillery
+./adhd_setup.py
+
 #post install recon-ng
 cd /opt/recon-ng
 apt-get -y install libxml2-dev libxslt1-dev

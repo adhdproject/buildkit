@@ -1073,6 +1073,13 @@ EOF
         bundle install
     fi
 
+    #post install artillery
+    if [ "${TOOLS[ARTILLERY]}" == "true" ]
+    then	
+	cd /opt/artillery
+	./adhd_setup.py
+    fi
+
     #post install recon-ng
     if [ "${TOOLS[RECON-NG]}" == "true" ]
     then
