@@ -277,6 +277,15 @@ pip install -r REQUIREMENTS
 
 #post install cowrie
 cd /opt/cowrie/data
+echo
+echo
+echo
+echo
+echo "####################################"
+echo "# Need to generate keys for cowrie #"
+echo "####################################"
+echo
+echo
 ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key
 
 #post install www
