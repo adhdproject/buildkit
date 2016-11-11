@@ -1076,7 +1076,7 @@ EOF
     #post install psad
     if [ "${TOOLS[PSAD]}" == "true" ]
     then
-	apt-get install cpanminus
+	apt-get -y install cpanminus
 	cpanm Date::Calc
     fi
 

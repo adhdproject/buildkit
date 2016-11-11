@@ -264,7 +264,7 @@ cd /opt/beef
 bundle update
 
 #post install psad
-apt-get install cpanminus
+apt-get -y install cpanminus
 cpanm Date::Calc
 
 #post install recon-ng
