@@ -1073,14 +1073,6 @@ EOF
         bundle install
     fi
 
-    #post install artillery
-    if [ "${TOOLS[ARTILLERY]}" == "true" ]
-    then	
-	cd /opt/artillery
-	./adhd_setup.py
-	sed -i 's/BAN="OFF"/BAN="ON"/g' /var/artillery/config
-    fi
-
     #post install psad
     if [ "${TOOLS[PSAD]}" == "true" ]
     then

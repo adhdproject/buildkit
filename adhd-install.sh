@@ -263,11 +263,6 @@ apt-get -y --force-yes install adhd-*
 cd /opt/beef
 bundle update
 
-#post install artillery
-cd /opt/artillery
-bash -c "python ./adhd_setup.py"
-sed -i 's/BAN="OFF"/BAN="ON"/g' /var/artillery/config
-
 #post install psad
 apt-get install cpanminus
 cpanm Date::Calc
