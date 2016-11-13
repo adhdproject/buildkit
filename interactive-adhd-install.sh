@@ -1078,6 +1078,13 @@ EOF
         bundle install
     fi
 
+    #post install beef
+    if [ "${TOOLS[ARTILLERY]}" == "true" ]
+    then
+        cp -R /opt/artillery /var/artillery
+    fi
+
+
     #post install psad
     if [ "${TOOLS[PSAD]}" == "true" ]
     then

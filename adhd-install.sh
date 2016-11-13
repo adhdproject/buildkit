@@ -263,6 +263,9 @@ apt-get -y --force-yes install adhd-*
 cd /opt/beef
 bundle update
 
+#post install artillery
+cp -R /opt/artillery /var/artillery
+
 #post install psad
 apt-get -y install cpanminus
 cpanm Date::Calc
