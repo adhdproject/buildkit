@@ -730,9 +730,14 @@ selected_install ()
     apt-get -y install golang
 
     #dependencies for cowrie
-    apt-get -y install git virtualenv libmpfr-dev libssl-dev libmpc-dev libffi-dev build-essential libpython-dev
-    pip install twisted[conch] cryptography configparser pyopenssl gmpy2 service_identity
+    apt-get -y install libmpfr-dev virtualenv libssl-dev libffi-dev build-essential libpython-dev
+    apt-get -y install libmpc-dev
+    pip install twisted[conch] cryptography configparser pyopenssl gmpy2 service_identity pycrypto
     apt-get -y install git python-twisted python-configparser python-crypto python-pyasn1 python-gmpy2 python-mysqldb python-zope.interface
+
+
+
+    #apt-get -y install git virtualenv libmpfr-dev libssl-dev libmpc-dev libffi-dev build-essential libpython-dev
 
     #dependencies for creepy
     if [ "${TOOLS[CREEPY]}" == "true" ]
