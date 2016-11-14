@@ -61,7 +61,7 @@ WEBLABYRINTH=39
 WHOSTHERE=40
 WINDOWSTOOLS=41
 WORDPOT=42
-
+OPENCANARY=43
 # colors
 GREEN='\033[1;32m'
 NC='\033[0m'
@@ -699,8 +699,14 @@ selected_install ()
     then
         ln -s /opt/wordpot /adhd/1-annoyance/wordpot
     fi
+    if [ "${TOOLS[OPENCANARY]}" == "true" ]
+    then
+        ln -s /opt/opencanary /adhd/3-absolution/opencanary
+    fi
 
-    apt-get -y install python-dev
+
+    apt-get -y install python-dev pip
+    pip install --upgrade pip
 
     if [ $ubuntu_version == "16.04" ]; then
     apt-get -y install libapache2-mod-php
@@ -918,6 +924,11 @@ EOF
     then
         apt-get -y --force-yes install adhd-artillery
     fi
+    if [ "${TOOLS[OPENCANARY]}" == "true" ]
+    then
+        apt-get -y --force-yes install adhd-opencanary
+    fi
+
     if [ "${TOOLS[BEARTRAP]}" == "true" ]
     then
         apt-get -y --force-yes install adhd-beartrap
@@ -1078,7 +1089,16 @@ EOF
         bundle install
     fi
 
-    #post install beef
+    #post install opencanary
+    if [  "${TOOLS[OPENCANARY]}" == "true" ]
+    then
+	cd /opt/opencanary
+	pip install -r requirements.txt
+	python ./setup.py install
+	opencanaryd --copyconfig
+    fi
+
+    #post install artillery
     if [ "${TOOLS[ARTILLERY]}" == "true" ]
     then
         cp -R /opt/artillery /var/artillery

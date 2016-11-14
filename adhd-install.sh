@@ -83,9 +83,10 @@ ln -s /opt/weblabyrinth /adhd/1-annoyance/weblabyrinth
 ln -s /opt/whosthere /adhd/2-attribution/whosthere
 ln -s /opt/windows-tools /adhd/1-annoyance/windows-tools
 ln -s /opt/wordpot /adhd/1-annoyance/wordpot
+ln -s /opt/opencanary /adhd/3-absolution/opencanary
 
-
-apt-get -y install python-dev
+apt-get -y install python-dev pip
+pip install --upgrade pip
 
 if [ $ubuntu_version == "16.04" ]; then
 apt-get -y install libapache2-mod-php
@@ -262,6 +263,12 @@ apt-get -y --force-yes install adhd-*
 #post install beef
 cd /opt/beef
 bundle update
+
+#post install opencanary
+cd /opt/opencanary
+pip install -r requirements.txt
+python ./setup.py install
+opencanaryd --copyconfig
 
 #post install artillery
 cp -R /opt/artillery /var/artillery
