@@ -26,6 +26,19 @@ echo "Script is creating user: $account"
 adduser $account
 fi
 
+#Cowrie keygen
+cd /tmp
+echo
+echo
+echo
+echo
+echo "####################################"
+echo "# Need to generate keys for cowrie #"
+echo "####################################"
+echo
+echo
+ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key
+
 apt-get update
 
 #install git
@@ -287,16 +300,7 @@ pip install -r REQUIREMENTS
 
 #post install cowrie
 cd /opt/cowrie/data
-echo
-echo
-echo
-echo
-echo "####################################"
-echo "# Need to generate keys for cowrie #"
-echo "####################################"
-echo
-echo
-ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key
+mv -f /tmp/ssh_host_dsa_key ./
 
 #post install www
 chown www-data:www-data /var/www -R

@@ -519,6 +519,21 @@ selected_install ()
     adduser $account
     fi
 
+    #keygen for cowrie
+    if [ "${TOOLS[COWRIE]}" == "true" ]
+    then
+        cd /tmp
+        echo
+        echo
+        echo
+        echo
+        echo "####################################"
+        echo "# Need to generate keys for cowrie #"
+        echo "####################################"
+        echo
+        echo
+        ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key
+    fi
 
 
     ## somehow figure out if apt-get update works
@@ -1124,16 +1139,7 @@ EOF
     if [ "${TOOLS[COWRIE]}" == "true" ]
     then
        cd /opt/cowrie/data
-       echo
-       echo
-       echo
-       echo
-       echo "####################################"
-       echo "# Need to generate keys for cowrie #"
-       echo "####################################"
-       echo
-       echo
-       ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key
+       mv -f /tmp/ssh_host_dsa_key ./
     fi
 
     #post install www
