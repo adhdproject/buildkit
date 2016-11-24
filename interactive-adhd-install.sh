@@ -517,6 +517,7 @@ selected_install ()
     echo
     echo "Script is creating user: $account"
     adduser $account
+    adduser $account sudo
     fi
 
     #keygen for cowrie

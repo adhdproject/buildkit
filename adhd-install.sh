@@ -24,6 +24,7 @@ if [ ${#grepout} == 0 ]; then
 echo 
 echo "Script is creating user: $account"
 adduser $account
+adduser $account sudo
 fi
 
 #Cowrie keygen
