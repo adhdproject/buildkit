@@ -1138,8 +1138,10 @@ EOF
     #post cowrie
     if [ "${TOOLS[COWRIE]}" == "true" ]
     then
-       cd /opt/cowrie/data
-       mv -f /tmp/ssh_host_dsa_key ./
+        cd /opt/cowrie/data
+        mv -f /tmp/ssh_host_dsa_key ./
+        cd /opt/cowrie
+        pip install -r requirements.txt
     fi
 
     #post install www
@@ -1166,6 +1168,7 @@ EOF
     #chown adhd:adhd /opt -R
     git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
     cd /opt/set
+    pip install -r requirements.txt
     ./setoolkit & sleep 5 && killall python
     cd /etc/setoolkit
     sed -i '/METASPLOIT_PATH/c\METASPLOIT_PATH=/opt/metasploit\' ./set.config

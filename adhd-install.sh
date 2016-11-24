@@ -100,6 +100,7 @@ ln -s /opt/opencanary /adhd/3-absolution/opencanary
 
 apt-get -y install python-dev pip
 pip install --upgrade pip
+easy_install -U pip
 
 if [ $ubuntu_version == "16.04" ]; then
 apt-get -y install libapache2-mod-php
@@ -301,9 +302,11 @@ pip install -r REQUIREMENTS
 #post install cowrie
 cd /opt/cowrie/data
 mv -f /tmp/ssh_host_dsa_key ./
+cd /opt/cowrie
+pip install -r requirements.txt
 
 #post install www
-chown www-data:www-data /var/www -R
+#chown www-data:www-data /var/www -R
 
 #post kippo
 apt-get -y install python-twisted
@@ -318,6 +321,7 @@ make install
 #post install
 git clone https://github.com/trustedsec/social-engineer-toolkit /opt/set
 cd /opt/set
+pip install -r requirements.txt
 ./setoolkit & sleep 5 && killall python
 cd /etc/setoolkit
 sed -i '/METASPLOIT_PATH/c\METASPLOIT_PATH=/opt/metasploit\' ./set.config
