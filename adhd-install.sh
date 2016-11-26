@@ -10,7 +10,6 @@ if [ -z "$ubuntu_version" ]; then ubuntu_version="15.10"; fi
 
 if [[ $1 != "" ]]; then
 account=$1
-echo $account
 else
 echo "This script will need to associate a user account with all the tools."
 echo "Enter the name of a user account you want associated with the install."
