@@ -143,6 +143,7 @@ pip install pytz python-qt flickrapi python-instagram yapsy tweepy google-api-py
 #dependencies for TALOS
 pip install netaddr
 pip install twisted
+pip install paramiko
 
 #dependencies for lockdown
 pip install splinter

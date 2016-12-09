@@ -773,6 +773,7 @@ selected_install ()
     then
         pip install netaddr
         pip install twisted
+	pip install paramiko
     fi
 
     #dependencies for lockdown
