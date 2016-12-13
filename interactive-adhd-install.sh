@@ -545,7 +545,7 @@ selected_install ()
     apt-get -y install git
 
     #general dependencies
-    apt-get -y install sqlite3 sqlite libmpfr-dev libmpc-dev
+    apt-get -y install sqlite3 sqlite libmpfr-dev libmpc-dev nmap
 
     cd /
     mkdir adhd

@@ -46,7 +46,7 @@ apt-get update
 apt-get -y install git
 
 #general dependencies
-apt-get -y install sqlite3 sqlite
+apt-get -y install sqlite3 sqlite nmap
 
 cd /
 mkdir adhd
