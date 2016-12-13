@@ -3,6 +3,12 @@ if [ `whoami` != 'root' ]; then
 echo "need to run as root, or with sudo"; exit
 fi
 
+if [[ `lsof /var/lib/dpkg/lock 2>/dev/null` == *"COMMAND"* ]]; then
+echo "Looks like some other process has locked dpkg"
+echo "Wait until the lock is released and try again"
+exit
+fi
+
 #get version number
 ubuntu_version=`lsb_release -a 2>/dev/null | grep release -i | cut -f2`
 if [ -z "$ubuntu_version" ]; then ubuntu_version="15.10"; fi

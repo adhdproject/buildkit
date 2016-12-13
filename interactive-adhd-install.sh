@@ -1226,6 +1226,13 @@ echo "Need to run as root, or with sudo"; exit
 fi
 
 
+if [[ `lsof /var/lib/dpkg/lock 2>/dev/null` == *"COMMAND"* ]]; then
+echo "Looks like some other process has locked dpkg"
+echo "Wait until the lock is released and try again"
+exit
+fi
+
+
 # user select which tools to install
 select_tools
 install_type=$?
