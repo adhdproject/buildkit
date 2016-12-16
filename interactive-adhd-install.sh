@@ -1106,6 +1106,14 @@ EOF
         bundle install
     fi
 
+    if [ "${TOOLS[LOCKDOWN]}" == "true" ]
+    then
+	cd /tmp
+	wget https://github.com/mozilla/geckodriver/releases/download/v0.11.1/geckodriver-v0.11.1-linux32.tar.gz
+	tar zxvf geckodriver-v0.11.1-linux32.tar.gz
+	mv geckodriver /usr/local/bin
+    fi
+
     #post install opencanary
     if [  "${TOOLS[OPENCANARY]}" == "true" ]
     then

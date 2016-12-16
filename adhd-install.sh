@@ -286,6 +286,12 @@ apt-get -y --force-yes install adhd-*
 cd /opt/beef
 bundle update
 
+#post install lockdown
+cd /tmp
+wget https://github.com/mozilla/geckodriver/releases/download/v0.11.1/geckodriver-v0.11.1-linux32.tar.gz
+tar zxvf geckodriver-v0.11.1-linux32.tar.gz
+mv geckodriver /usr/local/bin
+
 #post install opencanary
 cd /opt/opencanary
 pip install -r requirements.txt
