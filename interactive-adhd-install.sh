@@ -921,7 +921,7 @@ EOF
     ## tool names.
 
     if ! grep -q 'neoadhd' /etc/apt/sources.list; then
-        echo "deb  http://anonymoustaunts.com/neoadhd ./" >> /etc/apt/sources.list
+        echo "deb  https://prometheaninfosec.com/neoadhd ./" >> /etc/apt/sources.list
     fi
     apt-get update
 
