@@ -55,6 +55,9 @@ apt-get -y install git
 #general dependencies
 apt-get -y install sqlite3 sqlite nmap vim
 
+#decloak dependencies
+apt-get -y install icedtea-8-plugin browser-plugin-freshplayer-pepperflash
+
 cd /
 mkdir adhd
 cd adhd

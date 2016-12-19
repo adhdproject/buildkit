@@ -547,6 +547,9 @@ selected_install ()
     #general dependencies
     apt-get -y install sqlite3 sqlite libmpfr-dev libmpc-dev nmap vim
 
+    #dependencies for declaok
+    apt-get -y install icedtea-8-plugin browser-plugin-freshplayer-pepperflash
+
     cd /
     mkdir adhd
     cd adhd
