@@ -609,6 +609,7 @@ selected_install ()
     if [ "${TOOLS[HONEYBADGER]}" == "true" ]
     then
         ln -s /opt/honeybadger /adhd/2-attribution/honeybadger
+	ln -s /opt/honeybadgerv2 /adhd/2-attribution/honeybadgerv2
     fi
     if [ "${TOOLS[HUMANPY]}" == "true" ]
     then
@@ -999,7 +1000,7 @@ EOF
     fi
     if [ "${TOOLS[HONEYBADGER]}" == "true" ]
     then
-        apt-get -y --force-yes install adhd-honeybadger
+        apt-get -y --force-yes install adhd-honeybadger adhd-honeybadgerv2
     fi
     if [ "${TOOLS[HONEYPORTS]}" == "true" ]
     then
@@ -1107,6 +1108,15 @@ EOF
     then
         cd /opt/beef
         bundle install
+    fi
+
+    #post install honeybadgerv2
+    if [ "${TOOLS[HONEYBADGER]}" == "true" ]
+
+    then
+	cd /opt/honeybadgerv2/server
+	pip install -r requirements.txt
+	python -c "import honeybadger; honeybadger.initdb('adhd','adhd')"
     fi
 
     if [ "${TOOLS[LOCKDOWN]}" == "true" ]

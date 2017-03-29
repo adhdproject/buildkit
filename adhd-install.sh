@@ -72,6 +72,7 @@ ln -s /opt/beef /adhd/4-attack/beef
 ln -s /opt/cowrie /adhd/1-annoyance/cowrie
 ln -s /opt/creepy /adhd/2-attribution/creepy
 ln -s /opt/cryptolocked /adhd/1-annoyance/cryptolocked
+ln -s /opt/cryptolocked-ng /adhd/1-annoyance/cryptolocked-ng
 ln -s /opt/decloak /adhd/2-attribution/decloak
 ln -s /opt/defense_by_numbers /adhd/1-annoyance/defense_by_numbers
 ln -s /opt/denyhosts /adhd/1-annoyance/denyhosts
@@ -79,6 +80,7 @@ ln -s /opt/docz.py /adhd/2-attribution/docz.py
 ln -s /opt/gcat /adhd/4-attack/gcat
 ln -s /opt/ghostwriting /adhd/4-attack/ghostwriting
 ln -s /opt/honeybadger /adhd/2-attribution/honeybadger
+ln -s /opt/honeybadgerv2 /adhd/2-attribution/honeybadgerv2
 ln -s /opt/human.py /adhd/3-absolution/human.py
 ln -s /opt/invisiport /adhd/1-annoyance/invisiport
 ln -s /opt/jar-combiner /adhd/2-attribution/jar-combiner
@@ -289,6 +291,12 @@ apt-get -y --force-yes install adhd-*
 #post install beef
 cd /opt/beef
 bundle update
+
+#post install honeybadgerv2
+cd /opt/honeybadgerv2/server
+pip install -r requirements.txt
+python -c "import honeybadger; honeybadger.initdb('adhd','adhd')"
+
 
 #post install lockdown
 cd /tmp
