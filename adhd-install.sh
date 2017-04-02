@@ -393,4 +393,9 @@ echo "<VirtualHost *:80>
 </VirtualHost>" > /etc/apache2/sites-available/000-default.conf
 service apache2 restart
 touch .traditional-ran
+
+#post install beef
+cd /opt/beef
+bundle update
+
 reset
