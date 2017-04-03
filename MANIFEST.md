@@ -1,3 +1,7 @@
+#0.7.2
+Updated on 11/25/2016 by Defilan. 
+-Modified adhd-install.sh to accept argument for specific user. (Allows for automation)
+-Modified adhd-install.sh to create ssh key (public/private) automatically without the need for a passcode (Allows for automation)
 #0.7.1
 Added Cowrie
 Updated documentation style

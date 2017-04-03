@@ -1,4 +1,5 @@
 #!/bin/bash
+
 if [ `whoami` != 'root' ]; then
 echo "need to run as root, or with sudo"; exit
 fi
@@ -14,12 +15,16 @@ fi
 ubuntu_version=`lsb_release -a 2>/dev/null | grep release -i | cut -f2`
 if [ -z "$ubuntu_version" ]; then ubuntu_version="15.10"; fi
 
+if [[ $1 != "" ]]; then
+account=$1
+else
 echo "This script will need to associate a user account with all the tools."
 echo "Enter the name of a user account you want associated with the install."
 echo "If you enter a new account name... It will be created." 
 echo -n "Enter account name [adhd]: "
 read account
 echo
+fi
 
 if [ ${#account} == 0 ]; then
 account="adhd"
@@ -45,7 +50,7 @@ echo "# Need to generate keys for cowrie #"
 echo "####################################"
 echo
 echo
-ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key
+ssh-keygen -t dsa -b 1024 -f ssh_host_dsa_key -N ''
 
 apt-get update
 
