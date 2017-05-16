@@ -11,7 +11,7 @@ exit
 fi
 
 #is Ubuntu?
-is_ubuntu=`lsb_release -a 2>/dev/null | awk '/Distrib/ {print $3}'
+is_ubuntu=`lsb_release -a 2>/dev/null | awk '/Distrib/ {print $3}'`
 
 #get version number
 ubuntu_version=`lsb_release -a 2>/dev/null | grep release -i | cut -f2`
@@ -22,8 +22,9 @@ echo "You appear to be attempting to install ADHD onto an unsupported OS/Ubuntu 
 echo "You are more than welcome to try.  But things will likely break."
 echo "Would you like to continue? [y/N]"
 read choice_c
+choice_c=${choice_c:-n}
 
-if [ $choice_c == "y" ] || [ $choice_c == "Y" ]; then
+if [ $choice_c = "y" ] || [ $choice_c = "Y" ]; then
 echo "continuing!"
 echo
 echo
