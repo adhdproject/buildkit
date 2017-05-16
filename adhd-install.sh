@@ -10,9 +10,29 @@ echo "To see the lock run 'lsof /var/lib/dpkg/lock'"
 exit
 fi
 
+#is Ubuntu?
+is_ubuntu=`lsb_release -a 2>/dev/null | awk '/Distrib/ {print $3}'
+
 #get version number
 ubuntu_version=`lsb_release -a 2>/dev/null | grep release -i | cut -f2`
 if [ -z "$ubuntu_version" ]; then ubuntu_version="15.10"; fi
+
+if [ $is_ubuntu != "ubuntu" ] || [ $ubuntu_version != "16.04" ] && [ $ubuntu_version != "15.10" ]; then
+echo "You appear to be attempting to install ADHD onto an unsupported OS/Ubuntu Release."
+echo "You are more than welcome to try.  But things will likely break."
+echo "Would you like to continue? [y/N]"
+read choice_c
+
+if [ $choice_c == "y" ] || [ $choice_c == "Y" ]; then
+echo "continuing!"
+echo
+echo
+echo
+else
+exit
+fi
+fi  
+
 
 echo "This script will need to associate a user account with all the tools."
 echo "Enter the name of a user account you want associated with the install."
