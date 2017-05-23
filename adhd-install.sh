@@ -17,7 +17,7 @@ is_ubuntu=`lsb_release -a 2>/dev/null | awk '/Distrib/ {print $3}'`
 ubuntu_version=`lsb_release -a 2>/dev/null | grep release -i | cut -f2`
 if [ -z "$ubuntu_version" ]; then ubuntu_version="15.10"; fi
 
-if [ $is_ubuntu != "ubuntu" ] || [ $ubuntu_version != "16.04" ] && [ $ubuntu_version != "15.10" ]; then
+if [ $is_ubuntu != "Ubuntu" ] || [ $ubuntu_version != "16.04" ] && [ $ubuntu_version != "15.10" ]; then
 echo "You appear to be attempting to install ADHD onto an unsupported OS/Ubuntu Release."
 echo "You are more than welcome to try.  But things will likely break."
 echo "Would you like to continue? [y/N]"
