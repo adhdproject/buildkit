@@ -736,9 +736,6 @@ selected_install ()
     apt-get -y install php7.0-odbc
     fi
 
-
-
-
     if [ $ubuntu_version == "15.10" ]; then
     apt-get -y install php5
     apt-get -y install php5-mysql
@@ -808,6 +805,7 @@ selected_install ()
     #dependencies for beef
     if [ "${TOOLS[BEEF]}" == "true" ]
     then
+        apt-get install ruby
         gem install bundler
         apt-get -y install ruby-dev libsqlite3-dev libsqlite-dev
     fi
