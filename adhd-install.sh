@@ -413,6 +413,7 @@ echo "<VirtualHost *:80>
 
 </VirtualHost>" > /etc/apache2/sites-available/999-adhd.conf
 a2ensite 999-adhd.conf
+a2dissite 000-default.conf
 service apache2 restart
 touch .traditional-ran
 
