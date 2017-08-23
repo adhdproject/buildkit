@@ -377,9 +377,9 @@ git clone https://github.com/rapid7/metasploit-framework /opt/metasploit
 cd /opt/metasploit
 bundle install
 
-git clone https://github.com/adhdproject/webkit /var/www
+git clone https://github.com/adhdproject/webkit /var/www/adhd
 apt-get -y install apache2 
-chown www-data:www-data -R /var/www
+chown www-data:www-data -R /var/www/adhd
 chown $account:$account -R /opt
 a2enmod rewrite #for labyrinth
 a2enmod php7.0
@@ -387,12 +387,12 @@ a2dismod mpm_event
 a2enmod mpm_prefork
 echo "<VirtualHost *:80>
         ServerAdmin webmaster@localhost
-        DocumentRoot /var/www
+        DocumentRoot /var/www/adhd
 
 	DirectoryIndex index.php
 	
 
-        <Directory /var/www>
+        <Directory /var/www/adhd>
                 Options -Indexes +FollowSymLinks -MultiViews
 		AllowOverride all
 		Order allow,deny
@@ -400,18 +400,19 @@ echo "<VirtualHost *:80>
         	
 	</Directory>
 
-	<Directory /var/www/windows_tools>
+	<Directory /var/www/adhd/windows_tools>
 		Options +Indexes
 	</Directory>
 
-	<Directory /var/www/honeybadger>
+	<Directory /var/www/adhd/honeybadger>
 		RedirectMatch 404 /(\\.git|include|data|admin)
 	</Directory>
 
         ErrorLog \${APACHE_LOG_DIR}/error.log
         CustomLog \${APACHE_LOG_DIR}/access.log combined
 
-</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
+</VirtualHost>" > /etc/apache2/sites-available/999-adhd.conf
+a2ensite 999-adhd.conf
 service apache2 restart
 touch .traditional-ran
 
