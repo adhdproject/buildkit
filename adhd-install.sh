@@ -10,9 +10,30 @@ echo "To see the lock run 'lsof /var/lib/dpkg/lock'"
 exit
 fi
 
+#is Ubuntu?
+is_ubuntu=`lsb_release -a 2>/dev/null | awk '/Distrib/ {print $3}'`
+
 #get version number
 ubuntu_version=`lsb_release -a 2>/dev/null | grep release -i | cut -f2`
 if [ -z "$ubuntu_version" ]; then ubuntu_version="15.10"; fi
+
+if [ $is_ubuntu != "Ubuntu" ] || [ $ubuntu_version != "16.04" ] && [ $ubuntu_version != "15.10" ]; then
+echo "You appear to be attempting to install ADHD onto an unsupported OS/Ubuntu Release."
+echo "You are more than welcome to try.  But things will likely break."
+echo "Would you like to continue? [y/N]"
+read choice_c
+choice_c=${choice_c:-n}
+
+if [ $choice_c = "y" ] || [ $choice_c = "Y" ]; then
+echo "continuing!"
+echo
+echo
+echo
+else
+exit
+fi
+fi  
+
 
 echo "This script will need to associate a user account with all the tools."
 echo "Enter the name of a user account you want associated with the install."
@@ -357,9 +378,9 @@ git clone https://github.com/rapid7/metasploit-framework /opt/metasploit
 cd /opt/metasploit
 bundle install
 
-git clone https://github.com/adhdproject/webkit /var/www
+git clone https://github.com/adhdproject/webkit /var/www/adhd
 apt-get -y install apache2 
-chown www-data:www-data -R /var/www
+chown www-data:www-data -R /var/www/adhd
 chown $account:$account -R /opt
 a2enmod rewrite #for labyrinth
 a2enmod php7.0
@@ -367,12 +388,12 @@ a2dismod mpm_event
 a2enmod mpm_prefork
 echo "<VirtualHost *:80>
         ServerAdmin webmaster@localhost
-        DocumentRoot /var/www
+        DocumentRoot /var/www/adhd
 
 	DirectoryIndex index.php
 	
 
-        <Directory /var/www>
+        <Directory /var/www/adhd>
                 Options -Indexes +FollowSymLinks -MultiViews
 		AllowOverride all
 		Order allow,deny
@@ -380,18 +401,20 @@ echo "<VirtualHost *:80>
         	
 	</Directory>
 
-	<Directory /var/www/windows_tools>
+	<Directory /var/www/adhd/windows_tools>
 		Options +Indexes
 	</Directory>
 
-	<Directory /var/www/honeybadger>
+	<Directory /var/www/adhd/honeybadger>
 		RedirectMatch 404 /(\\.git|include|data|admin)
 	</Directory>
 
         ErrorLog \${APACHE_LOG_DIR}/error.log
         CustomLog \${APACHE_LOG_DIR}/access.log combined
 
-</VirtualHost>" > /etc/apache2/sites-available/000-default.conf
+</VirtualHost>" > /etc/apache2/sites-available/999-adhd.conf
+a2ensite 999-adhd.conf
+a2dissite 000-default.conf
 service apache2 restart
 touch .traditional-ran
 
