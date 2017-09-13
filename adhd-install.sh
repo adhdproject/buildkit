@@ -121,6 +121,7 @@ apt-get -y install php7.0-mysql
 apt-get -y install php7.0-pgsql
 apt-get -y install php7.0-sqlite
 apt-get -y install php7.0-odbc
+apt-get -y install php7.0-curl
 fi
 
 if [ $ubuntu_version == "15.10" ]; then
