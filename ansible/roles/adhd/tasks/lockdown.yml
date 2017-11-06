@@ -1,0 +1,5 @@
+- name: install geckodriver for lockdown
+  unarchive:
+    src: '{{ adhd_tools.lockdown.geckodriver.url }}'
+    dest: /usr/local/bin
+    remote_src: yes

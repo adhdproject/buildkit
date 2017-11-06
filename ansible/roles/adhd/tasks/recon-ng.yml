@@ -1,0 +1,5 @@
+- name: 'install recon-ng requirements'
+  pip:
+    requirements: '{{ adhd_tools["recon-ng"].dir }}/REQUIREMENTS'
+    executable: pip2
+

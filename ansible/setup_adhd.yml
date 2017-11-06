@@ -1,0 +1,5 @@
+- name: Installation of ADHD distribution
+  hosts: adhd
+  become: true
+  roles:
+    - adhd

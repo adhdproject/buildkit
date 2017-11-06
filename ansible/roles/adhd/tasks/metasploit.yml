@@ -1,0 +1,10 @@
+- name: clone metasploit repo
+  git:
+    repo: '{{ adhd_tools.metasploit.repo }}'
+    dest: '{{ adhd_tools.metasploit.dir }}'
+
+- name: install metasploit packages
+  command: 'bundle install'
+  args:
+    chdir: '{{ adhd_tools.metasploit.dir }}'
+    creates: '{{ adhd_tools.metasploit.dir }}/Gemfile.lock'

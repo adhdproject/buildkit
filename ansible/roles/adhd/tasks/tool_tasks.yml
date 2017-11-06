@@ -1,0 +1,21 @@
+- include_tasks: artillery.yml
+  when: '{{ "artillery" in adhd_tool_names_to_install }}'
+
+- include_tasks: beef.yml
+  when: '{{ "beef" in adhd_tool_names_to_install }}'
+
+- include_tasks: beef.yml
+  when: '{{ "beef" in adhd_tool_names_to_install }}'
+
+- include_tasks: beef.yml
+  when: '{{ "beef" in adhd_tool_names_to_install }}'
+
+- include_tasks: beef.yml
+  when: '{{ "beef" in adhd_tool_names_to_install }}'
+
+- include_tasks: beef.yml
+  when: '{{ "beef" in adhd_tool_names_to_install }}'
+
+- include_tasks: beef.yml
+  when: '{{ "beef" in adhd_tool_names_to_install }}'
+

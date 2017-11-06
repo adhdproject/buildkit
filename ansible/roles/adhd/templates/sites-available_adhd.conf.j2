@@ -1,0 +1,26 @@
+<VirtualHost {{ adhd_webkit.interface }}:{{ adhd_webkit.port }}>
+        ServerAdmin webmaster@localhost
+	DocumentRoot {{ adhd_webkit.dir }}
+
+	DirectoryIndex index.php
+
+
+	<Directory {{ adhd_webkit.dir }}>
+		Options -Indexes +FollowSymLinks -MultiViews
+		AllowOverride all
+		Order allow,deny
+		Allow from all
+
+	</Directory>
+
+	<Directory {{ adhd_webkit.dir }}/windows_tools>
+        	Options +Indexes
+	</Directory>
+
+	<Directory {{ adhd_webkit.dir }}/honeybadger>
+		RedirectMatch 404 /(\.git|include|data|admin)
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

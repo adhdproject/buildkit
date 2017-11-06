@@ -1,0 +1,48 @@
+- name: create postgres user directory for decloak operations
+  file:
+    path: '{{ adhd_tools.decloak.postgres_dir }}'
+    state: directory
+    owner: postgres
+    
+- name: create decloak user
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: decloakuser
+    password: '{{ adhd_passwords.postgres.decloakuser }}'
+
+- name: create decloak database
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: decloak
+    state: present
+  notify:
+    - create decloak requests table
+    - restart postgresql
+
+- name: render decloak postgres sql
+  template:
+    src: decloak_postgres.sql
+    dest: '{{ adhd_tools.decloak.postgres_dir }}/decloak_postgres.sql'
+  notify:
+    - create decloak requests table
+
+- name: configure postgres for decloak
+  lineinfile:
+    path: '/etc/postgresql/9.5/main/pg_hba.conf'
+    regexp: "local   all             all                                     peer"
+    line:   "local   all             all                                     md5"
+    backrefs: yes
+  notify:
+    - restart postgresql
+  # with_fileglob:
+  #   - '/etc/postgresql/9.5/main/pg_hba.conf'
+  # register: configure_pg_hba
+
+# - name: restart postgres with change in pg_hba.conf
+#   service:
+#     name: postgresql
+#     state: restarted
+#   when: configure_pg_hba.changed
+

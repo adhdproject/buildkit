@@ -1,0 +1,10 @@
+- name: generate cowrie dsa key
+  command: 'ssh-keygen -N "" -t dsa -b 1024 -f {{ adhd_tools.cowrie.dir }}/{{ adhd_tools.cowrie.keyfile }}'
+  args:
+    creates: '{{ adhd_tools.cowrie.dir }}/{{ adhd_tools.cowrie.keyfile }}'
+
+- name: install cowrie requirements
+  pip:
+    requirements: '{{ adhd_tools.cowrie.dir }}/requirements.txt'
+    executable: pip2
+

@@ -1,0 +1,18 @@
+- name: ___KLUDGE___ fix json gem error
+  lineinfile:
+    path: '{{ adhd_tools.beef.dir }}/Gemfile'
+    regexp: "gem 'json'"
+    line: "gem 'json_pure'"
+    backrefs: yes
+  tags:
+    - beef
+    
+- name: update beef bundle
+  shell: 'bundle update && touch {{ adhd_tools.beef.dir }}/.done'
+  args:
+    chdir: '{{ adhd_tools.beef.dir }}'
+    creates: '{{ adhd_tools.beef.dir }}/.done'
+    executable: /bin/bash
+  tags:
+    - beef
+    

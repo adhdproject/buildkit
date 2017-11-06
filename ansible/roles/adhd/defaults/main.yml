@@ -1,0 +1,476 @@
+# roles/adhd/defaults/main.yml
+
+adhd_user: adhd
+adhd_group: '{{ adhd_user }}'
+adhd_home: /adhd
+adhd_tool_root: /opt
+
+adhd_general_packages:
+  - git
+  - screen
+  - sqlite3
+  - sqlite
+  - nmap
+  - vim
+  - icedtea-8-plugin
+  - browser-plugin-freshplayer-pepperflash
+  - python-dev
+  - python3-dev
+  - python-pip
+  - python3-pip
+  - python-virtualenv
+  - python3-virtualenv
+  - ruby
+  - ruby-bundler
+adhd_ubuntu_version_packages: [] # to be overridden in /group_vars
+adhd_packages: '{{ adhd_general_packages + adhd_ubuntu_version_packages }}'
+
+adhd_neoadhd_repo: 'deb https://prometheaninfosec.com/neoadhd ./'
+
+adhd_tool_names_to_install: >-
+  {{ adhd_toolsets | sum(attribute="tools", start=[]) | union([]) }}
+
+adhd_webkit:
+  repo: 'https://github.com/adhdproject/webkit'
+  dir: /var/www/adhd
+  interface: '*'
+  port: 80
+  site_conf: 999-adhd.conf
+  enable_modules:
+    - rewrite
+    - php7.0
+    - mpm_prefork
+  disable_modules:
+    - mpm_event
+
+
+adhd_passwords:
+  mysql:
+    root: '{{ adhd_mysql_root_password }}'
+    webbuguser: '{{ adhd_mysql_webbuguser_password }}'
+    weblabyrinthuser: '{{ adhd_mysql_weblabyrinthuser_password }}'
+  postgres:
+    root: '{{ adhd_postgres_root_password }}'
+    decloakuser: '{{ adhd_postgres_decloakuser_password }}'
+
+adhd_toolsets:
+  - name: annoyance
+    tools:
+      - artillery
+      - beartrap
+      - cowrie
+      - cryptolocked
+      - cryptolocked-ng
+      - defense-by-numbers
+      - denyhosts
+      - invisiport
+      - kippo
+      - nova
+      - oschameleon
+      - PHP-HTTP-Tarpit
+      - portspoof
+      - psad
+      - remux
+      - rubberglue
+      - spidertrap
+      - tcprooter
+      - weblabyrinth
+      - windows-tools
+      - wordpot
+
+  - name: attribution
+    tools:
+      - creepy
+      - decloak
+      - docz.py
+      - honeybadger
+      - honeybadgerv2
+      - jar-combiner
+      - sqlitebugserver
+      - webbugserver
+      - whosthere
+
+  - name: absolution
+    tools:
+      - human.py
+      - lockdown
+      - TALOS
+      - OpenBAC
+      # - sent.py
+      - simple-pivot-detect
+      - sweeper
+      - opencanary
+
+  - name: attack
+    tools:
+      - beef
+      - gcat
+      - ghostwriting
+      - java-web-attack
+      - metasploit
+      - recon-ng
+      - sidejack
+
+adhd_tools:
+  #-----
+  # A
+  artillery:
+    package: adhd-artillery
+    git: https://github.com/BinaryDefense/artillery.git
+    dir: /opt/artillery
+  
+  #-----
+  # B
+  beartrap:
+    package: adhd-beartrap
+    git: https://github.com/chrisbdaemon/beartrap.git
+    dir: /opt/beartrap
+    apt:
+      - ruby
+    gem:
+      - getopt
+
+  beef:
+    package: adhd-beef
+    dir: /opt/beef
+    apt:
+      - ruby
+      - ruby-dev
+      - sqlite3
+      - sqlite3-doc
+      - libsqlite-dev
+      - libsqlite3-dev
+      - software-properties-common
+    gem:
+      - bundler
+
+  #-----
+  # C
+  cowrie:
+    package: adhd-cowrie
+    dir: /opt/cowrie
+    keyfile: 'ssh_host_dsa_key'
+    apt:
+      - libmpfr-dev
+      - libssl-dev
+      - libffi-dev
+      - build-essential
+      - libpython-dev
+      - libmpc-dev
+      - libmysqlclient-dev
+      - git
+      - python-twisted
+      - python-configparser
+      - python-crypto
+      - python-pyasn1
+      - python-gmpy2
+      - python-mysqldb
+      - python-zope.interface
+    pip:
+      - twisted # [conch]
+      - cryptography
+      - configparser
+      - pyopenssl
+      - gmpy2
+      - service_identity
+      - pycrypto
+      - MySQL-python
+    pip3:
+      - mysqlclient
+
+  creepy:
+    package: adhd-creepy
+    dir: /opt/creepy
+    apt:
+      - python-qt4
+      - python-pip
+    pip:
+      - pytz
+      - python-qt
+      - flickrapi
+      - python-instagram
+      - yapsy
+      - tweepy
+      - google-api-python-client
+      - python-dateutil
+      - configobj
+      - dominate
+
+  cryptolocked:
+    package: adhd-cryptolocked
+    git: https://bitbucket.org/Zaeyx/cryptolocked.git
+    dir: /opt/cryptolocked
+
+  cryptolocked-ng:
+    package: adhd-cryptolocked-ng
+    dir: /opt/cryptolocked-ng
+
+  #-----
+  # D
+  decloak:
+    package: adhd-decloak
+    dir: /opt/decloak
+    postgres_dir: /opt/decloak/.postgres_operations_dir
+    apt:
+      - haxe
+      - postgresql
+      - postgresql-contrib
+    pip:
+      - psycopg2
+    pip3:
+      - psycopg2
+
+  defense-by-numbers:
+    package: adhd-defense-by-numbers
+    dir: /opt/defense-by-numbers
+
+  denyhosts:
+    package: adhd-denyhosts
+    dir: /opt/denyhosts
+
+  docz.py:
+    package: adhd-docz.py
+    dir: /opt/docz.py
+
+  #-----
+  # G
+  gcat:
+    package: adhd-gcat
+    dir: /opt/gcat
+
+  ghostwriting:
+    package: adhd-ghostwriting
+    dir: /opt/ghostwriting
+
+  #-----
+  # H
+  honeyports:
+    package: adhd-honeyports
+    dir: /opt/honeyports/cross-platform/honeyports/
+    apt:
+      - arpspoof
+
+  honeybadger:
+    package: adhd-honeybadger
+    dir: /opt/honeybadger
+
+  honeybadgerv2:
+    package: adhd-honeybadgerv2
+    dir: /opt/honeybadgerv2
+
+  human.py:
+    package: adhd-human.py
+    dir: /opt/human.py
+
+  #-----
+  # I
+  invisiport:
+    package: adhd-invisiport
+    dir: /opt/invisiport
+
+  #-----
+  # J
+  jar-combiner:
+    package: adhd-jar-combiner
+    dir: /opt/jar-combiner
+
+  java-web-attack:
+    package: adhd-java-web-attack
+    dir: /opt/java-web-attack
+
+  #-----
+  # K
+  kippo:
+    package: adhd-kippo
+    dir: /opt/kippo
+    apt:
+      - python-twisted
+
+  #-----
+  # L
+  lockdown:
+    package: adhd-lockdown
+    dir: /opt/lockdown
+    pip:
+      - splinter
+    geckodriver:
+      url: https://github.com/mozilla/geckodriver/releases/download/v0.11.1/geckodriver-v0.11.1-linux32.tar.gz
+      
+
+  #-----
+  # M
+  metasploit:
+    dir: /opt/metasploit
+    repo: 'https://github.com/rapid7/metasploit-framework'
+    apt:
+      - zlib1g-dev
+      - libpq-dev
+      - libpcap-dev
+      - libsqlite-dev
+      - libsqlite3-dev
+      - libpq-dev
+      - libpcap-dev
+
+  #-----
+  # N
+  nova:
+    package: adhd-nova
+    dir: /opt/nova
+
+  #-----
+  # O
+  OpenBAC:
+    package: adhd-openbac
+    dir: /opt/OpenBAC
+
+  opencanary:
+    package: adhd-opencanary
+    dir: /opt/opencanary
+
+  oschameleon:
+    package: adhd-oschameleon
+    dir: /opt/oschameleon
+    apt:
+      - python-nfqueue
+      - python-gevent
+      - python-scapy
+
+  #-----
+  # P
+  PHP-HTTP-Tarpit:
+    package: adhd-php-http-tarpit
+    dir: /opt/PHP-HTTP-Tarpit
+    git: https://github.com/msigley/PHP-HTTP-Tarpit
+
+  portspoof:
+    package: adhd-portspoof
+    dir: /opt/portspoof
+
+  psad:
+    package: adhd-psad
+    dir: /opt/psad
+    apt:
+      - cpanminus
+
+  #-----
+  # R
+  recon-ng:
+    package: adhd-recon-ng
+    dir: /opt/recon-ng
+    apt:
+      - libxml2-dev
+      - libxslt1-dev
+
+  remux:
+    package: adhd-remux
+    dir: /opt/remux
+
+  rubberglue:
+    package: adhd-rubberglue
+    dir: /opt/rubberglue
+
+  #-----
+  # S
+  # sent.py:
+  #   dir: /opt/sent.py
+
+  set:
+    dir: /opt/set
+    config_path: /etc/setoolkit/set.config
+
+  sidejack:
+    package: adhd-sidejack
+    dir: /opt/sidejack
+
+  simple-pivot-detect:
+    package: adhd-simple-pivot-detect
+    dir: /opt/simple-pivot-detect
+
+  spidertrap:
+    package: adhd-spidertrap
+    dir: /opt/spidertrap
+
+  sqlitebugserver:
+    package: adhd-sqlitebugserver
+    dir: /opt/sqlitebugserver
+
+  sweeper:
+    package: adhd-sweeper
+    dir: /opt/sweeper
+
+  #-----
+  # T
+  TALOS:
+    package: adhd-talos
+    dir: /opt/TALOS
+    pip:
+      - netaddr
+      - twisted
+      - paramiko
+
+  tcprooter:
+    package: adhd-tcprooter
+    dir: /opt/tcprooter
+
+  #-----
+  # W
+  webbugserver:
+    package: adhd-webbugserver
+    dir: /opt/webbugserver
+    mysql_dir: /opt/webbugserver/.mysql_operations_dir
+    apt:
+      - libmysqlclient-dev
+      - python-mysqldb
+      - mysql-server
+    pip:
+      - MySQL-python
+    pip3:
+      - mysqlclient
+
+  weblabyrinth:
+    package: adhd-weblabyrinth
+    dir: /opt/weblabyrinth
+    mysql_dir: /opt/weblabyrinth/.mysql_operations_dir
+    apt:
+      - libmysqlclient-dev
+      - python-mysqldb
+      - mysql-server
+    pip:
+      - MySQL-python
+    pip3:
+      - mysqlclient
+
+  whosthere:
+    package: adhd-whosthere
+    dir: /opt/whosthere
+    apt:
+      - golang
+      - golang-go
+
+  windows-tools:
+    package: adhd-windows-tools
+    dir: /opt/windows-tools
+
+  wordpot:
+    package: adhd-wordpot
+    dir: /opt/wordpot
+    pip:
+      - flask
+
+adhd_all_tools: >-
+  {{ [adhd_tools, adhd_ubuntu_version_tools] | merge_tools }}
+
+adhd_tools_to_install: >-
+  {{ adhd_tool_names_to_install | map("extract", adhd_all_tools) | list }}
+
+adhd_tool_packages: 
+  apt: '{{ adhd_tools_to_install|map_default("apt",[])|sum(start=[]) }}'
+  pip: '{{ adhd_tools_to_install|map_default("pip",[])|sum(start=[]) }}'
+  pip3: '{{ adhd_tools_to_install|map_default("pip3",[])|sum(start=[]) }}'
+  gem: '{{ adhd_tools_to_install|map_default("gem",[])|sum(start=[]) }}'
+  tools: '{{ adhd_tools_to_install | map_omit("package") | list }}'
+
+adhd_mysql_tools:
+  - cowrie
+  - weblabyrinth
+  - webbugserver

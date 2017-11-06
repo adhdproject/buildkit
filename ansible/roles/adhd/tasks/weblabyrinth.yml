@@ -1,0 +1,27 @@
+- name: create directory for weblabyrinth mysql operations
+  file:
+    path: '{{ adhd_tools.weblabyrinth.mysql_dir }}'
+    state: directory
+    
+- name: create weblabyrinth database
+  mysql_db:
+    name: weblabyrinth
+    state: present
+    login_user: root
+    login_password: '{{ adhd_passwords.mysql.root }}'
+  notify: create weblabyrinth.crawlers table
+    
+- name: create weblabyrinth user
+  mysql_user:
+    name: weblabyrinthuser
+    password: '{{ adhd_passwords.mysql.weblabyrinthuser }}'
+    state: present
+    login_user: root
+    login_password: '{{ adhd_passwords.mysql.root }}'
+    priv: 'weblabyrinth.*:ALL'
+
+- name: render weblabyrinth.crawlers table mysql code
+  template:
+    src: weblabyrinth_mysql.sql
+    dest: '{{ adhd_tools.weblabyrinth.mysql_dir }}/weblabyrinth_mysql.sql'
+  notify: create weblabyrinth.crawlers table

@@ -1,0 +1,5 @@
+adhd_mysql_root_password: adhd
+adhd_mysql_webbuguser_password: adhd
+adhd_mysql_weblabyrinthuser_password: adhd
+adhd_postgres_root_password: adhd
+adhd_postgres_decloakuser_password: adhd
