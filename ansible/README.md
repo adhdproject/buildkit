@@ -121,6 +121,54 @@ inventory:
         - name: data
 ```
 
+- Run the `dowright` script. The below command will:
+    1. Build the droplets and run their cloud configurations (`-b`)
+    2. Wait until the build/config process completes (`-w`)
+    3. Create the DNS entries for the created droplets (`-d`)
+    4. Render an Ansible inventory file for the created droplets
+       (`-i`)
+
+```
+python -m dowright dowright.yml -bwdi
+```
+
+- Run the `setup_adhd.yml` playbook:
+
+```
+ansible-playbook -i hosts.conf setup_adhd.yml
+```
+
+- Get a cup of coffee. Hopefully, after you've had a few draughts of
+  the tasty beverage, you'll have a set of ADHD nodes to play with.
+
+## Warning: Public Webkit
+
+All of your AHDH nodes have Apache2 serving the ADHD webkit publicly
+on port 80. This is the way the `adhd-install.sh` file does it, and as
+this was a (semi) faithful representation of that script, it results
+in the same outcome.
+
+You might want to stop the apache2 service until you get your
+bearings:
+
+```
+ansible -i hosts.conf adhd -m service -a 'name=apache2 state=stopped'
+```
+
+## Picking and Choosing ADHD Tools
+
+You can modify the tools to be installed for any particular droplet or
+groups of droplets by providing the following Ansible variable in a
+host file in `host_vars` or a group file in `group_vars`:
+
+```yaml
+ansible_tool_names_to_install:
+  - opencanary
+  - cowrie
+```
+
+This will only install the tools listed on those droplets.
+
 ## Kludges
 
 - beef: had to "fix" the json gem (forcing it to use the 'json_pure'
