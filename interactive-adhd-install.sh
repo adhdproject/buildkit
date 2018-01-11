@@ -1,5 +1,14 @@
 #!/bin/bash
 
+echo 
+echo  '#################################'                                                                   
+echo  '# WARNING:'
+echo  '# The domain pometheaninfosec.com is owned by this projects old '
+echo  '# maintainer... You should NOT install this project at this time'
+echo  '#################################
+
+exit
+
 ## GLOBALS ##
 
 # holds whether each tool selected or not
@@ -926,9 +935,9 @@ EOF
     ## do a loop with the array of tools and their
     ## tool names.
 
-    if ! grep -q 'neoadhd' /etc/apt/sources.list; then
-        echo "deb  https://prometheaninfosec.com/neoadhd ./" >> /etc/apt/sources.list
-    fi
+  #  if ! grep -q 'neoadhd' /etc/apt/sources.list; then
+  #      echo "deb  https://prometheaninfosec.com/neoadhd ./" >> /etc/apt/sources.list
+  #  fi
     apt-get update
 
     if [ "${TOOLS[OPENBAC]}" == "true" ]
