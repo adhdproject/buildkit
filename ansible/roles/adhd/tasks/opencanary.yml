@@ -1,0 +1,16 @@
+- name: install opencanary pip2 requirements
+  pip:
+    requirements: requirements.txt
+    executable: pip2
+    chdir: '{{ adhd_tools.opencanary.dir }}'
+
+# - name: install opencanary via pip2
+#   pip:
+#     name: 'file:///opt/opencanary'
+#     state: present
+#     executable: pip2
+
+- name: opencanary config
+  command: opencanaryd --copyconfig
+  args:
+    creates: '/root/.opencanary.conf'

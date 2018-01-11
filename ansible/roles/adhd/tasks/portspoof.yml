@@ -1,0 +1,6 @@
+- name: build/compile portspoof
+  shell: "./configure && make && make install"
+  args:
+    chdir: '{{ adhd_tools.portspoof.dir }}'
+    creates: /usr/local/bin/portspoof
+    executable: /bin/bash

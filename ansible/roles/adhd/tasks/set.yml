@@ -1,0 +1,22 @@
+- name: clone SET repo
+  git:
+    repo: 'https://github.com/trustedsec/social-engineer-toolkit'
+    dest: '{{ adhd_tools.set.dir }}'
+    
+- name: install SET requirements
+  pip:
+    requirements: '{{ adhd_tools.set.dir }}/requirements.txt'
+    executable: pip2
+
+- name: create SET config
+  command: 'setoolkit & sleep 5 && killall python'
+  args:
+    chdir: '{{ adhd_tools.set.dir }}'
+    creates: '{{ adhd_tools.set.config_path }}'
+
+- name: fix SET metasploit path
+  lineinfile:
+    path: '{{ adhd_tools.set.config_path }}'
+    regexp: METASPLOIT_PATH
+    line: 'METASPLOIT_PATH={{ adhd_tools.metasploit.dir }}'
+

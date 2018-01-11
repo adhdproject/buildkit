@@ -1,0 +1,135 @@
+# roles/adhd/tasks/main.yml
+    
+- name: setup adhd group
+  group:
+    name: '{{ adhd_group }}'
+    state: present
+
+- name: setup adhd user
+  user:
+    name: '{{ adhd_user }}'
+    groups: '{{ adhd_group }},sudo'
+
+- name: neoadhd repo
+  apt_repository:
+    repo: '{{ adhd_neoadhd_repo }}'
+    state: present
+
+- name: apt update
+  apt:
+    update_cache: yes
+
+
+
+#----------------------------------------------------------------------
+# Configure root MySQL password (before installing mysql package)
+- name: setup root mysql password 1
+  debconf:
+    name: 'mysql-server'
+    question: 'mysql-server/root_password'
+    vtype: password
+    value: '{{ adhd_passwords.mysql.root }}'
+  when: adhd_tool_names_to_install | intersect(adhd_mysql_tools)
+
+- name: setup root mysql password 2
+  debconf:
+    name: 'mysql-server'
+    question: 'mysql-server/root_password_again'
+    vtype: password
+    value: '{{ adhd_passwords.mysql.root }}'
+  when: adhd_tool_names_to_install | intersect(adhd_mysql_tools)
+#----------------------------------------------------------------------
+
+
+    
+- name: install general apt packages for adhd
+  apt:
+    name: '{{ adhd_packages | join(",") }}'
+    state: present
+
+- name: 'install tool-specific apt packages'
+  apt:
+    name: '{{ adhd_tool_packages.apt | join(",") }}'
+    state: present
+
+- name: 'install tool-specific pip2 packages'
+  pip:
+    name: '{{ adhd_tool_packages.pip | join(",") }}'
+    state: present
+    executable: pip2
+
+- name: 'install tool-specific pip3 packages'
+  pip:
+    name: '{{ adhd_tool_packages.pip3 | join(",") }}'
+    state: present
+    executable: pip3
+    
+- name: 'install tool-specific gems packages'
+  gem:
+    name: '{{ item }}'
+    state: present
+  with_items: '{{ adhd_tool_packages.gem }}'
+
+- name: install neoadhd tool packages
+  apt:
+    name: '{{ adhd_tool_packages.tools | join(",") }}'
+    state: present
+    force: yes
+    allow_unauthenticated: yes
+  notify: modified tool root
+
+- name: 'include/run tool-specific tasks'
+  include_tasks: '{{ item }}'
+  with_items: '{{ adhd_tool_names_to_install | map_format("{}.yml") | file_exists | list }}'
+  notify: modified tool root
+    
+
+
+#----------------------------------------------------------------------
+# Webkit
+- name: install apache2
+  apt:
+    name: apache2
+    state: present
+
+- name: disable apache2 modules
+  apache2_module:
+    state: absent
+    name: '{{ item }}'
+  with_items: '{{ adhd_webkit.disable_modules }}'
+  notify: restart apache
+
+- name: enable apache2 modules
+  apache2_module:
+    state: present
+    name: '{{ item }}'
+  with_items: '{{ adhd_webkit.enable_modules }}'
+  notify: restart apache
+
+- name: disable default site
+  command: a2dissite 000-default.conf
+  args:
+    removes: /etc/apache2/sites-enabled/000-default.conf
+  notify: restart apache
+
+- name: clone adhd webkit repo
+  git:
+    repo: '{{ adhd_webkit.repo }}'
+    dest: '{{ adhd_webkit.dir }}'
+  notify: modified webkit
+
+- name: render adhd webkit site config
+  template:
+    src: sites-available_adhd.conf.j2
+    dest: '/etc/apache2/sites-available/{{ adhd_webkit.site_conf }}'
+    group: www-data
+    owner: www-data
+  notify: modified webkit
+    
+- name: enable adhd webkit site
+  command: 'a2ensite {{ adhd_webkit.site_conf }}'
+  args:
+    creates: '/etc/apache2/sites-enabled/{{ adhd_webkit.site_conf }}'
+  notify: modified webkit
+#----------------------------------------------------------------------
+

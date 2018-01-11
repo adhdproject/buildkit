@@ -1,0 +1,60 @@
+token: adhd
+prefix: adhd
+droplets:
+  # This ("data") is a droplet group that will be both a DigitalOcean
+  # tag as well as an Ansible inventory group
+  data:
+    # Multiple nodes can be specified using Ansible's syntax
+    - name: data[00:02]
+      # you can provide shell commands in the list below that will be
+      # executed on all created droplets once created
+      cloud_config_commands:
+        - apt update
+        - apt install -y python python-pip python3 python3-pip
+        - pip2 install --upgrade pip
+        - pip3 install --upgrade pip
+          
+defaults:
+  image: ubuntu-16-04-x32       # Currently, only this slug is supported
+  size_slug: 1gb
+  region: nyc1
+  ssh_keys:
+    # put your SSH key ids here
+    - 439892
+    - 438959
+  private_networking: yes
+
+domains:
+  # make sure the domain listed here (e.g. mydomain.net) is one that
+  # 1) you own and 2) is managed by DigitalOcean's DNS infrastructure
+  mydomain.net:
+    - type: A
+      name: adhd-master         # i.e. adhd-master.mydomain.net
+
+      data: data00              # this is the droplet name as written
+                                # in the "droplets:" section above
+
+    - type: A
+      name: financialdata
+      data: data01
+    - type: A
+      name: juicyinfo
+      data: data02
+
+# Here we specify the structure of the generated Ansible inventory
+# file. 
+inventory:
+  name: hosts.conf              # Inventory filename
+  groups:                       # Inventory groups
+    adhd_master:
+      hosts:
+        - name: data00
+    adhd:
+      children:
+        - name: data
+    
+
+        
+    
+    
+

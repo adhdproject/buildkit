@@ -1,0 +1,4 @@
+- name: 'add Date::Calc for psad'
+  cpanm:
+    name: 'Date::Calc'
+

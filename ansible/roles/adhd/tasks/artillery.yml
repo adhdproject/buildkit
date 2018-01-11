@@ -1,0 +1,6 @@
+- name: link artillery to /var
+  file:
+    state: link
+    src: '{{ adhd_tools.artillery.dir }}'
+    dest: '/var/artillery'
+    

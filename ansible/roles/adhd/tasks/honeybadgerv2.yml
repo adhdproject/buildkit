@@ -1,0 +1,11 @@
+- name: install honeybadgerv2 pip2 requirements
+  pip:
+    requirements: '{{ adhd_tools.honeybadgerv2.dir }}/server/requirements.txt'
+    executable: pip2
+
+- name: init honeybadgerv2 db
+  command: python -c "import honeybadger; honeybadger.initdb('adhd','adhd')"
+  args:
+    chdir: '{{ adhd_tools.honeybadgerv2.dir }}/server'
+    creates: '/tmp/data.db'
+    

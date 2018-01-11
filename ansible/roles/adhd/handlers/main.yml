@@ -1,0 +1,56 @@
+# roles/adhd/handlers/main.yml
+
+- name: stop apache
+  service:
+    name: apache2
+    state: stopped
+
+- name: restart apache
+  service:
+    name: apache2
+    state: restarted
+  listen: modified webkit
+
+- name: reset adhd webkit owner
+  file:
+    path: '{{ adhd_webkit.dir }}'
+    owner: www-data
+    group: www-data
+    recurse: yes
+  listen: modified webkit
+
+- name: set /opt owner to adhd user
+  file:
+    path: '{{ adhd_tool_root }}'
+    owner: '{{ adhd_user }}'
+    group: '{{ adhd_user }}'
+    recurse: yes
+  listen: modified tool root
+
+- name: restart postgresql
+  service:
+    name: postgresql
+    state: restarted
+
+- name: create weblabyrinth.crawlers table
+  mysql_db:
+    name: weblabyrinth
+    state: import
+    target: '{{ adhd_tools.weblabyrinth.mysql_dir }}/weblabyrinth_mysql.sql'
+    login_user: root
+    login_password: '{{ adhd_passwords.mysql.root }}'
+  
+- name: create webbug.requests table
+  mysql_db:
+    name: webbug
+    state: import
+    target: '{{ adhd_tools.webbugserver.mysql_dir }}/webbugserver_mysql.sql'
+    login_user: root
+    login_password: '{{ adhd_passwords.mysql.root }}'
+
+- name: create decloak requests table
+  become: yes
+  become_user: postgres
+  shell: >-
+    psql -f {{ adhd_tools.decloak.postgres_dir }}/decloak_postgres.sql
+

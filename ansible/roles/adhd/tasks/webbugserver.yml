@@ -1,0 +1,28 @@
+- name: create directory for webbugserver mysql operations
+  file:
+    path: '{{ adhd_tools.webbugserver.mysql_dir }}'
+    state: directory
+    
+- name: create webbugserver database
+  mysql_db:
+    name: webbug
+    state: present
+    login_user: root
+    login_password: '{{ adhd_passwords.mysql.root }}'
+  notify: create webbug.requests table
+    
+- name: create webbugserver user
+  mysql_user:
+    name: webbuguser
+    password: '{{ adhd_passwords.mysql.webbuguser }}'
+    state: present
+    login_user: root
+    login_password: '{{ adhd_passwords.mysql.root }}'
+    priv: 'webbug.*:ALL'
+
+- name: render webbug.requests table mysql code
+  template:
+    src: webbugserver_mysql.sql
+    dest: '{{ adhd_tools.webbugserver.mysql_dir }}/webbugserver_mysql.sql'
+  notify: create webbug.requests table
+
