@@ -1,4 +1,14 @@
 #!/bin/bash
+
+echo 
+echo  '#################################'                                                                   
+echo  '# WARNING:'
+echo  '# The domain pometheaninfosec.com is owned by this projects old '
+echo  '# maintainer... You should NOT install this project at this time'
+echo  '#################################
+
+exit
+
 if [ `whoami` != 'root' ]; then
 echo "need to run as root, or with sudo"; exit
 fi
@@ -305,9 +315,10 @@ cd -
 service postgresql restart
 
 
-if ! grep -q 'neoadhd' /etc/apt/sources.list; then
-	echo "deb  https://prometheaninfosec.com/neoadhd ./" >> /etc/apt/sources.list
-fi
+
+#if ! grep -q 'neoadhd' /etc/apt/sources.list; then
+#	echo "deb  https://prometheaninfosec.com/neoadhd ./" >> /etc/apt/sources.list
+#fi
 apt-get update
 apt-get -y --force-yes install adhd-*
 
